@@ -29,7 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             },
-            icon: Icon(Icons.person),
+            icon: Icon(
+              Icons.person,
+              size: 28,
+            ),
           ),
         ],
       ),

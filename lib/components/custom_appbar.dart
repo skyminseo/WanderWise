@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wander_wise/resources/color.dart';
+import 'package:wander_wise/screen/my_page_screen.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -38,7 +39,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             : null,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MyPageScreen(),
+                ),
+              );
+            },
             icon: Icon(
               Icons.person,
               size: 28.0,
