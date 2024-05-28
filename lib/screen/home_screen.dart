@@ -19,7 +19,20 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: ,
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => StartScreen(),
+              ),
+            );
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {

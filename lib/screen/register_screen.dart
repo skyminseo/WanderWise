@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wander_wise/auth/google_auth.dart';
 import 'package:wander_wise/components/login_button.dart';
 import 'package:wander_wise/components/login_textfield.dart';
 import 'package:wander_wise/components/square_tile.dart';
@@ -111,13 +112,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                     ),
-
                   SizedBox(height: 50),
                   isLoading
                       ? CircularProgressIndicator()
                       : LoginButton(
-                    onTap: signUserUp, text: 'Sign Up',
-                  ),
+                          onTap: signUserUp,
+                          text: 'Sign Up',
+                        ),
                   SizedBox(height: 40),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -151,9 +152,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SquareTile(imagePath: 'asset/img/google_logo.png'),
+                      SquareTile(
+                        onTap: () => GoogleAuth().signInWithGoogle(),
+                        imagePath: 'asset/img/google_logo.png',
+                      ),
                       SizedBox(width: 24),
-                      SquareTile(imagePath: 'asset/img/apple_logo.png'),
+                      SquareTile(
+                        onTap: (){},
+                        imagePath: 'asset/img/apple_logo.png',
+                      ),
                     ],
                   ),
                   SizedBox(height: 50),
