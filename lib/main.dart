@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wander_wise/auth/auth_page.dart';
 import 'package:wander_wise/components/text_theme.dart';
 import 'package:wander_wise/screen/home_screen.dart';
 import 'package:wander_wise/screen/start_screen.dart';

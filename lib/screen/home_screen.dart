@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wander_wise/screen/predictor_screen.dart';
+import 'package:wander_wise/screen/start_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,10 +13,28 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
+  final user = FirebaseAuth.instance.currentUser!;
+
+  void signUserOut() async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => StartScreen()),
+      (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            onPressed: signUserOut,
+            icon: Icon(Icons.logout),
+          ),
+        ],
+      ),
       backgroundColor: Colors.blue[50],
       body: SafeArea(
         bottom: false,
@@ -26,6 +46,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             child: Column(
               children: [
+                Text(
+                  'Hello! ' + user.email!,
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
                 _Top(
                   selectedDate: selectedDate,
                   onPressed: onCalendarPressed,
@@ -39,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  onCalendarPressed() {
+  void onCalendarPressed() {
     showCupertinoDialog(
       context: context,
       barrierDismissible: true,
@@ -54,11 +81,9 @@ class _HomeScreenState extends State<HomeScreen> {
               minimumDate: DateTime.now().add(Duration(days: 1)),
               initialDateTime: DateTime.now().add(Duration(days: 1)),
               onDateTimeChanged: (DateTime date) {
-                setState(
-                  () {
-                    selectedDate = date;
-                  },
-                );
+                setState(() {
+                  selectedDate = date;
+                });
               },
               dateOrder: DatePickerDateOrder.ymd,
             ),
@@ -69,7 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _Top extends StatefulWidget {
+class _Top extends StatelessWidget {
   final DateTime selectedDate;
   final VoidCallback onPressed;
 
@@ -79,11 +104,6 @@ class _Top extends StatefulWidget {
     super.key,
   });
 
-  @override
-  State<_Top> createState() => _TopState();
-}
-
-class _TopState extends State<_Top> {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
@@ -95,33 +115,33 @@ class _TopState extends State<_Top> {
         children: [
           Text(
             'WanderWise',
-            style: textTheme.displayLarge,
           ),
           Text(
             'Travel D-Day',
-            style: textTheme.displayMedium,
           ),
           const SizedBox(
-            height: 30.0,
+            height: 10.0,
           ),
           Text(
-            '${widget.selectedDate.year}.${widget.selectedDate.month}.${widget.selectedDate.day}',
+            '${selectedDate.year}.${selectedDate.month}.${selectedDate.day}',
             style: textTheme.bodyLarge,
           ),
           IconButton(
             iconSize: 80.0,
             color: Colors.deepOrange[400],
-            onPressed: widget.onPressed,
+            onPressed: onPressed,
             icon: Icon(
               Icons.calendar_month_rounded,
             ),
           ),
           Text(
-            'D-${widget.selectedDate.difference(now).inDays}',
+            'D-${selectedDate.difference(now).inDays}',
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           ElevatedButton(
-            onPressed: onSettingScreenPressed,
+            onPressed: () {
+              onSettingScreenPressed(context);
+            },
             child: Text(
               "Let's make a plan!",
               style: TextStyle(
@@ -135,7 +155,7 @@ class _TopState extends State<_Top> {
     );
   }
 
-  onSettingScreenPressed() {
+  void onSettingScreenPressed(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) {

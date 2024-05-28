@@ -9,6 +9,7 @@ import 'package:wander_wise/cards/weather_card.dart';
 import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/screen/home_screen.dart';
 import 'package:wander_wise/screen/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class StartScreen extends StatefulWidget {
   StartScreen({super.key});
@@ -25,23 +26,40 @@ class _StartScreenState extends State<StartScreen> {
   void initState() {
     super.initState();
 
+    // Check authentication state
+    _checkAuthState();
+
+    // Timer for PageView
     timer = Timer.periodic(
       Duration(seconds: 4),
-      (timer) {
-        int currentPage = controller.page!.toInt();
-        int nextPage = currentPage + 1;
+          (timer) {
+        if (controller.page != null) {
+          int currentPage = controller.page!.toInt();
+          int nextPage = currentPage + 1;
 
-        if (nextPage > 4) {
-          nextPage = 0;
+          if (nextPage > 4) {
+            nextPage = 0;
+          }
+
+          controller.animateToPage(
+            nextPage,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOutCirc,
+          );
         }
-
-        controller.animateToPage(
-          nextPage,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeInOutCirc,
-        );
       },
     );
+  }
+
+  void _checkAuthState() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      }
+    });
   }
 
   @override
@@ -49,9 +67,7 @@ class _StartScreenState extends State<StartScreen> {
     if (timer != null) {
       timer!.cancel();
     }
-
     controller.dispose();
-
     super.dispose();
   }
 
@@ -88,21 +104,13 @@ class _StartScreenState extends State<StartScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _startButton(
-                  buttonContent: 'Get Started',
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                _LoginButton(
-                  buttonContent: 'I already have an account',
-                ),
+                _StartButton(buttonContent: 'Get Started'),
+                SizedBox(height: 16.0),
+                _LoginButton(buttonContent: 'I already have an account'),
               ],
             ),
           )
@@ -112,10 +120,10 @@ class _StartScreenState extends State<StartScreen> {
   }
 }
 
-class _startButton extends StatelessWidget {
+class _StartButton extends StatelessWidget {
   final String buttonContent;
 
-  const _startButton({
+  const _StartButton({
     required this.buttonContent,
     super.key,
   });
@@ -124,13 +132,24 @@ class _startButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return HomeScreen();
-            },
-          ),
-        );
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return HomeScreen();
+              },
+            ),
+          );
+        } else {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (BuildContext context) {
+                return LoginScreen();
+              },
+            ),
+          );
+        }
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryColor,
@@ -143,9 +162,7 @@ class _startButton extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
-        child: Text(
-          buttonContent,
-        ),
+        child: Text(buttonContent),
       ),
     );
   }
@@ -181,9 +198,7 @@ class _LoginButton extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12.0),
-        child: Text(
-          buttonContent,
-        ),
+        child: Text(buttonContent),
       ),
     );
   }
