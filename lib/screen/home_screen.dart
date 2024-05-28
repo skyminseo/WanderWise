@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wander_wise/screen/predictor_screen.dart';
+import 'package:wander_wise/components/home_drawer.dart';
 import 'package:wander_wise/screen/my_page_screen.dart';
+import 'package:wander_wise/screen/predictor_screen.dart';
 import 'package:wander_wise/screen/start_screen.dart';
+import 'package:wander_wise/screen/community_screen.dart'; // Import CommunityScreen
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,23 +18,19 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
   final user = FirebaseAuth.instance.currentUser!;
 
+  void signUserOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => StartScreen()),
+          (route) => false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: ,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => StartScreen(),
-              ),
-            );
-          },
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-          ),
-        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -48,6 +46,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+      drawer: HomeDrawer(
+        onProfileTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => MyPageScreen(),
+            ),
+          );
+        },
+        onSignOut: () => signUserOut(context),
       ),
       backgroundColor: Colors.blue[50],
       body: SafeArea(
@@ -66,6 +74,16 @@ class _HomeScreenState extends State<HomeScreen> {
             _Plan(
               selectedDate: selectedDate,
               onPressed: onCalendarPressed,
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CommunityScreen(),
+                  ),
+                );
+              },
+              child: Text('Go to Community'),
             ),
           ],
         ),
