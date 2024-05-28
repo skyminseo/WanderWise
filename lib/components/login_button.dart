@@ -3,8 +3,13 @@ import 'package:wander_wise/resources/color.dart';
 
 class LoginButton extends StatelessWidget {
   final Function()? onTap;
+  final String text;
 
-  const LoginButton({required this.onTap, super.key,});
+  const LoginButton({
+    required this.onTap,
+    required this.text,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -14,12 +19,10 @@ class LoginButton extends StatelessWidget {
         padding: EdgeInsets.all(20),
         margin: EdgeInsets.symmetric(horizontal: 25),
         decoration: BoxDecoration(
-          color: Colors.blueGrey,
-          borderRadius: BorderRadius.circular(16.0)
-        ),
+            color: Colors.blueGrey, borderRadius: BorderRadius.circular(16.0)),
         child: Center(
           child: Text(
-            "Sign In",
+            text,
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.w700,

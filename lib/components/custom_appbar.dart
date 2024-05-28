@@ -14,36 +14,38 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar(
-      backgroundColor: primaryColor,
-      centerTitle: true,
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 22.0,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      automaticallyImplyLeading: automaticallyImplyLeading,
-      leading: automaticallyImplyLeading
-          ? IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios_new_rounded,
-              ),
-              onPressed: () {
-                Navigator.maybePop(context);
-              },
-            )
-          : null,
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.person,
-            size: 28.0,
+    return Scaffold(
+      body: AppBar(
+        backgroundColor: primaryColor,
+        centerTitle: true,
+        title: Text(
+          title,
+          style: TextStyle(
+            fontSize: 22.0,
+            fontWeight: FontWeight.w600,
           ),
         ),
-      ],
+        automaticallyImplyLeading: automaticallyImplyLeading,
+        leading: automaticallyImplyLeading
+            ? IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                ),
+                onPressed: () {
+                  Navigator.maybePop(context);
+                },
+              )
+            : null,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.person,
+              size: 28.0,
+            ),
+          ),
+        ],
+      ),
     );
   }
 

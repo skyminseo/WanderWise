@@ -4,7 +4,8 @@ import 'package:wander_wise/screen/home_screen.dart';
 import 'package:wander_wise/screen/login_screen.dart';
 
 class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
+  final Function()? onTap;
+  const AuthPage({required this.onTap, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,9 @@ class AuthPage extends StatelessWidget {
           if (snapshot.hasData) {
             return HomeScreen();
           } else {
-            return LoginScreen();
+            return LoginScreen(
+              onTap: onTap,
+            );
           }
         },
       ),

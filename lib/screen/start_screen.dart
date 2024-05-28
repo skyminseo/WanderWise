@@ -8,7 +8,7 @@ import 'package:wander_wise/cards/travel_card.dart';
 import 'package:wander_wise/cards/weather_card.dart';
 import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/screen/home_screen.dart';
-import 'package:wander_wise/screen/login_screen.dart';
+import 'package:wander_wise/screen/login_or_register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class StartScreen extends StatefulWidget {
@@ -108,9 +108,31 @@ class _StartScreenState extends State<StartScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _StartButton(buttonContent: 'Get Started'),
+                _StartButton(
+                  buttonContent: 'Get Started',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return LoginOrRegisterScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
                 SizedBox(height: 16.0),
-                _LoginButton(buttonContent: 'I already have an account'),
+                _LoginButton(
+                  buttonContent: 'I already have an account',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          return LoginOrRegisterScreen();
+                        },
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           )
@@ -121,36 +143,19 @@ class _StartScreenState extends State<StartScreen> {
 }
 
 class _StartButton extends StatelessWidget {
+  final Function()? onTap;
   final String buttonContent;
 
   const _StartButton({
     required this.buttonContent,
+    required this.onTap,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        User? user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return HomeScreen();
-              },
-            ),
-          );
-        } else {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) {
-                return LoginScreen();
-              },
-            ),
-          );
-        }
-      },
+      onPressed: onTap,
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
@@ -170,24 +175,18 @@ class _StartButton extends StatelessWidget {
 
 class _LoginButton extends StatelessWidget {
   final String buttonContent;
+  final Function()? onTap;
 
   const _LoginButton({
     required this.buttonContent,
+    required this.onTap,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) {
-              return LoginScreen();
-            },
-          ),
-        );
-      },
+      onPressed: onTap,
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.grey[50],
         foregroundColor: Colors.blueGrey,

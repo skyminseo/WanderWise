@@ -5,28 +5,36 @@ import 'package:wander_wise/components/login_textfield.dart';
 import 'package:wander_wise/components/square_tile.dart';
 import 'package:wander_wise/resources/color.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   final Function()? onTap;
-  const LoginScreen({required this.onTap, super.key});
+  const RegisterScreen({required this.onTap, super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
   bool isLoading = false;
   String errorMessage = '';
 
-  void signUserIn() async {
+  void signUserUp() async {
+    if (passwordController.text != confirmPasswordController.text) {
+      setState(() {
+        errorMessage = 'Passwords do not match';
+      });
+      return;
+    }
+
     setState(() {
       isLoading = true;
       errorMessage = '';
     });
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
@@ -45,6 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -65,15 +74,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     Icons.lock,
                     size: 100,
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 15),
                   Text(
-                    'Welcome back you\'ve been missed!',
+                    'Create a new account!',
                     style: TextStyle(
                       color: Colors.grey[700],
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 25),
+                  SizedBox(height: 15),
                   LoginTextfield(
                     controller: emailController,
                     hintText: 'Email',
@@ -86,6 +95,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     obscureText: true,
                   ),
                   SizedBox(height: 10),
+                  LoginTextfield(
+                    controller: confirmPasswordController,
+                    hintText: 'Confirm Password',
+                    obscureText: true,
+                  ),
                   if (errorMessage.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 32.0),
@@ -97,28 +111,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 25),
+
+                  SizedBox(height: 50),
                   isLoading
                       ? CircularProgressIndicator()
                       : LoginButton(
-                    onTap: signUserIn, text: 'Sign In',
+                    onTap: signUserUp, text: 'Sign Up',
                   ),
-                  SizedBox(height: 50),
+                  SizedBox(height: 40),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Row(
@@ -161,7 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Not a member?',
+                        'Already have an account?',
                         style: TextStyle(
                           color: Colors.grey[700],
                         ),
@@ -170,7 +170,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       GestureDetector(
                         onTap: widget.onTap,
                         child: Text(
-                          'Register Now!',
+                          'Login Now!',
                           style: TextStyle(
                             color: Colors.blueGrey[600],
                             fontWeight: FontWeight.w700,

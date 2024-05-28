@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wander_wise/screen/predictor_screen.dart';
+import 'package:wander_wise/screen/my_page_screen.dart';
 import 'package:wander_wise/screen/start_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,52 +16,42 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
   final user = FirebaseAuth.instance.currentUser!;
 
-  void signUserOut() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => StartScreen()),
-      (route) => false,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            onPressed: signUserOut,
-            icon: Icon(Icons.logout),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MyPageScreen(),
+                ),
+              );
+            },
+            icon: Icon(Icons.person),
           ),
         ],
       ),
       backgroundColor: Colors.blue[50],
       body: SafeArea(
         bottom: false,
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 70.0,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _Logo(),
+            Text(
+              'Hello! ' + user.email!,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-            child: Column(
-              children: [
-                Text(
-                  'Hello! ' + user.email!,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-                _Top(
-                  selectedDate: selectedDate,
-                  onPressed: onCalendarPressed,
-                ),
-                _Bottom(),
-              ],
+            _Plan(
+              selectedDate: selectedDate,
+              onPressed: onCalendarPressed,
             ),
-          ),
+          ],
         ),
       ),
     );
@@ -94,11 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _Top extends StatelessWidget {
+class _Plan extends StatelessWidget {
   final DateTime selectedDate;
   final VoidCallback onPressed;
 
-  const _Top({
+  const _Plan({
     required this.selectedDate,
     required this.onPressed,
     super.key,
@@ -113,43 +104,42 @@ class _Top extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Text(
-            'WanderWise',
-          ),
-          Text(
-            'Travel D-Day',
-          ),
-          const SizedBox(
-            height: 10.0,
-          ),
-          Text(
-            '${selectedDate.year}.${selectedDate.month}.${selectedDate.day}',
-            style: textTheme.bodyLarge,
-          ),
-          IconButton(
-            iconSize: 80.0,
-            color: Colors.deepOrange[400],
-            onPressed: onPressed,
-            icon: Icon(
-              Icons.calendar_month_rounded,
-            ),
-          ),
-          Text(
-            'D-${selectedDate.difference(now).inDays}',
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
           ElevatedButton(
             onPressed: () {
               onSettingScreenPressed(context);
             },
-            child: Text(
-              "Let's make a plan!",
-              style: TextStyle(
-                color: Colors.deepOrange,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey[50],
+              foregroundColor: Colors.blueGrey,
+              textStyle: TextStyle(
                 fontSize: 20.0,
+                fontWeight: FontWeight.w700,
               ),
             ),
+            child: Text(
+              "Let's make a plan!",
+            ),
           ),
+          Column(
+            children: [
+              Text(
+                '${selectedDate.year}.${selectedDate.month}.${selectedDate.day}',
+                style: textTheme.bodyLarge,
+              ),
+              IconButton(
+                iconSize: 80.0,
+                color: Colors.deepOrange[400],
+                onPressed: onPressed,
+                icon: Icon(
+                  Icons.calendar_month_rounded,
+                ),
+              ),
+              Text(
+                'D-${selectedDate.difference(now).inDays}',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -166,15 +156,15 @@ class _Top extends StatelessWidget {
   }
 }
 
-class _Bottom extends StatelessWidget {
-  const _Bottom({super.key});
+class _Logo extends StatelessWidget {
+  const _Logo({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 84.0),
-        child: Image.asset('asset/img/plane.png'),
+        padding: EdgeInsets.symmetric(horizontal: 100.0),
+        child: Image.asset('asset/img/wanderwise_logo.png'),
       ),
     );
   }
