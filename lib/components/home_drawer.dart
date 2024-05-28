@@ -21,11 +21,7 @@ class HomeDrawer extends StatelessWidget {
         children: [
           /// header
           DrawerHeader(
-            child: Icon(
-              Icons.person,
-              color: Colors.blueGrey,
-              size: 64,
-            ),
+            child: Image.asset("asset/img/edit_logo.png")
           ),
 
           /// home list tile
