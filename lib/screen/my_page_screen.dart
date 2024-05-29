@@ -62,7 +62,7 @@ class _MyPageScreenState extends State<MyPageScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => StartScreen()),
-          (route) => false,
+      (route) => false,
     );
   }
 
@@ -104,7 +104,14 @@ class _MyPageScreenState extends State<MyPageScreen> {
                       fontWeight: FontWeight.w700,
                       color: Colors.grey[700]),
                 ),
-                SizedBox(height: 50),
+                Divider(
+                  thickness: 1,
+                  height: 20,
+                  indent: 24,
+                  endIndent: 24,
+                  color: Colors.grey[300],
+                ),
+                SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.only(left: 25.0),
                   child: Text(

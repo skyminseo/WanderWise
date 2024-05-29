@@ -76,9 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   _WelcomeText(),
                   const SizedBox(height: 20),
-                  _Plan(
-                    onPressed: onCalendarPressed,
-                  ),
+                  _Plan(),
                   const SizedBox(height: 20),
                   _CommunityButton(),
                 ],
@@ -95,33 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute(
         builder: (context) => CommunityScreen(),
       ),
-    );
-  }
-
-  void onCalendarPressed() {
-    showCupertinoDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            color: Colors.white,
-            height: 300.0,
-            child: CupertinoDatePicker(
-              mode: CupertinoDatePickerMode.date,
-              minimumDate: DateTime.now().add(Duration(days: 1)),
-              initialDateTime: DateTime.now().add(Duration(days: 1)),
-              onDateTimeChanged: (DateTime date) {
-                setState(() {
-                  selectedDate = date;
-                });
-              },
-              dateOrder: DatePickerDateOrder.ymd,
-            ),
-          ),
-        );
-      },
     );
   }
 }
@@ -144,28 +115,20 @@ class _WelcomeText extends StatelessWidget {
 }
 
 class _Plan extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  const _Plan({
-    required this.onPressed,
-    super.key,
-  });
+  const _Plan({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-    final textTheme = Theme.of(context).textTheme;
-
     return ButtonLayout(
       onTap: () {
-        onSettingScreenPressed(context);
+        onPredictorScreenPressed(context);
       },
       text: "Let's predict flight prices!",
       buttonColor: blueColor,
     );
   }
 
-  void onSettingScreenPressed(BuildContext context) {
+  void onPredictorScreenPressed(BuildContext context) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (BuildContext context) {
