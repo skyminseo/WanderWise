@@ -18,31 +18,36 @@ class HomeDrawer extends StatelessWidget {
     return Drawer(
       backgroundColor: Colors.blueGrey[100],
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          /// header
-          DrawerHeader(
-            child: Image.asset("asset/img/edit_logo.png")
-          ),
+          Column(
+            children: [
+              /// header
+              DrawerHeader(child: Image.asset("asset/img/edit_logo.png")),
 
-          /// home list tile
-          ListTileLayout(
-            icon: Icons.home,
-            text: 'H O M E',
-            onTap: () {},
-          ),
+              /// home list tile
+              ListTileLayout(
+                icon: Icons.home,
+                text: 'H O M E',
+                onTap: () {},
+              ),
 
-          /// profile list tile
-          ListTileLayout(
-            icon: Icons.account_circle,
-            text: 'P R O F I L E',
-            onTap: onProfileTap
+              /// profile list tile
+              ListTileLayout(
+                  icon: Icons.account_circle,
+                  text: 'P R O F I L E',
+                  onTap: onProfileTap),
+            ],
           ),
 
           /// logout list tile
-          ListTileLayout(
-            icon: Icons.logout_rounded,
-            text: 'L O G O U T',
-            onTap: onSignOut,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: ListTileLayout(
+              icon: Icons.logout_rounded,
+              text: 'L O G O U T',
+              onTap: onSignOut,
+            ),
           ),
         ],
       ),

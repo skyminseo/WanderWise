@@ -64,29 +64,25 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _Logo(),
-            Text(
-              'Hello! ' + user.email!,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            _WelcomeText(),
             _Plan(
               selectedDate: selectedDate,
               onPressed: onCalendarPressed,
             ),
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => CommunityScreen(),
-                  ),
-                );
-              },
+              onPressed: onCommunityPressed,
               child: Text('Go to Community'),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void onCommunityPressed () {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => CommunityScreen(),
       ),
     );
   }
@@ -118,6 +114,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+class _WelcomeText extends StatelessWidget {
+  final user = FirebaseAuth.instance.currentUser!;
+
+  _WelcomeText({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Hello! ' + user.email!,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+      ),
+    );
+  }
+}
+
 
 class _Plan extends StatelessWidget {
   final DateTime selectedDate;
