@@ -35,9 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Image.asset(
-          'asset/img/edit_logo.png',
-          width: 64,
-          height: 64,
+          'asset/img/branding_image.png',
+          width: 148,
         ),
         actions: [
           IconButton(
