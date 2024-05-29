@@ -23,7 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => StartScreen()),
-          (route) => false,
+      (route) => false,
     );
   }
 
@@ -31,6 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
+        title: Image.asset(
+          'asset/img/edit_logo.png',
+          width: 64,
+          height: 64,
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -79,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void onCommunityPressed () {
+  void onCommunityPressed() {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => CommunityScreen(),
@@ -131,7 +137,6 @@ class _WelcomeText extends StatelessWidget {
     );
   }
 }
-
 
 class _Plan extends StatelessWidget {
   final DateTime selectedDate;

@@ -114,7 +114,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                   SizedBox(height: 50),
                   isLoading
-                      ? CircularProgressIndicator()
+                      ? CircularProgressIndicator(
+                          color: primaryColor,
+                          strokeWidth: 4.0,
+                        )
                       : LoginButton(
                           onTap: signUserUp,
                           text: 'Sign Up',
@@ -158,7 +161,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       SizedBox(width: 24),
                       SquareTile(
-                        onTap: (){},
+                        onTap: () {},
                         imagePath: 'asset/img/apple_logo.png',
                       ),
                     ],

@@ -1,83 +1,149 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:wander_wise/posts/post_model.dart';
+import 'package:wander_wise/components/custom_appbar.dart';
+import 'package:wander_wise/components/textfield_layout.dart';
+import 'package:wander_wise/posts/wall_post.dart';
+import 'package:wander_wise/resources/color.dart';
+import 'package:wander_wise/screen/my_page_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class CommunityScreen extends StatefulWidget {
   const CommunityScreen({super.key});
 
   @override
-  _CommunityScreenState createState() => _CommunityScreenState();
+  State<CommunityScreen> createState() => _CommunityScreenState();
 }
 
 class _CommunityScreenState extends State<CommunityScreen> {
-  final List<Post> _posts = [];
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _experienceController = TextEditingController();
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
-  void _addPost() {
-    if (_usernameController.text.isEmpty || _experienceController.text.isEmpty) {
-      return;
+  final textController = TextEditingController();
+
+  void signOut() {
+    FirebaseAuth.instance.signOut();
+  }
+
+  void postMessage() {
+    if (textController.text.isNotEmpty) {
+      FirebaseFirestore.instance.collection("User Posts").add({
+        'UserEmail': currentUser.email,
+        'Message': textController.text,
+        'TimeStamp': Timestamp.now(),
+      });
     }
     setState(() {
-      _posts.add(
-        Post(
-          username: _usernameController.text,
-          experience: _experienceController.text,
-        ),
-      );
-      _usernameController.clear();
-      _experienceController.clear();
+      textController.clear();
+      FocusScope.of(context).unfocus();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.blueGrey[200],
       appBar: AppBar(
-        title: Text('Community'),
+        centerTitle: true,
+        title: Text('Travel Community'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => MyPageScreen(),
+                ),
+              );
+            },
+            icon: Icon(Icons.person, size: 28),
+          ),
+        ],
       ),
       body: Column(
         children: [
+          // wall
           Expanded(
-            child: ListView.builder(
-              itemCount: _posts.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_posts[index].username),
-                  subtitle: Text(_posts[index].experience),
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("User Posts")
+                  .orderBy("TimeStamp", descending: false)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      final post = snapshot.data!.docs[index];
+                      return WallPost(
+                        message: post['Message'],
+                        user: post['UserEmail'],
+                      );
+                    },
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Text("Error: ${snapshot.error}"),
+                  );
+                }
+                return Center(
+                  child: CircularProgressIndicator(),
                 );
               },
             ),
           ),
+
+          // post message
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
+            padding: const EdgeInsets.only(
+              left: 8,
+              right: 8,
+              bottom: 16.0,
+            ),
+            child: Row(
               children: [
-                TextField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(labelText: 'Username'),
+                Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.grey[500],
+                  ),
+                  padding: EdgeInsets.all(10),
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
                 ),
-                TextField(
-                  controller: _experienceController,
-                  decoration: InputDecoration(labelText: 'Experience'),
-                  maxLines: 3,
+                Expanded(
+                  child: TextfieldLayout(
+                    controller: textController,
+                    hintText: "Write your post..",
+                    obscureText: false,
+                  ),
                 ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: _addPost,
-                  child: Text('Share Experience'),
+                IconButton(
+                  onPressed: postMessage,
+                  icon: Icon(Icons.send_rounded),
                 ),
               ],
             ),
           ),
+
+          // logged in as
+          Text(
+            "Logged in as: " + currentUser.email!,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 24),
         ],
       ),
     );
   }
+}
 
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _experienceController.dispose();
-    super.dispose();
-  }
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MaterialApp(
+    home: CommunityScreen(),
+  ));
 }

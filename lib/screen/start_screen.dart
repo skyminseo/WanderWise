@@ -10,6 +10,7 @@ import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/screen/home_screen.dart';
 import 'package:wander_wise/screen/login_or_register_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wander_wise/screen/register_screen.dart';
 
 class StartScreen extends StatefulWidget {
   StartScreen({super.key});
@@ -114,7 +115,9 @@ class _StartScreenState extends State<StartScreen> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return LoginOrRegisterScreen();
+                          return RegisterScreen(onTap: (){
+                            LoginOrRegisterScreen();
+                          });
                         },
                       ),
                     );

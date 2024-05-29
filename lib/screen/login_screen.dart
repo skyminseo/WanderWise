@@ -115,7 +115,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   SizedBox(height: 25),
                   isLoading
-                      ? CircularProgressIndicator()
+                      ? CircularProgressIndicator(
+                          color: primaryColor,
+                          strokeWidth: 4.0,
+                        )
                       : LoginButton(
                           onTap: signUserIn,
                           text: 'Sign In',
@@ -159,7 +162,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       SizedBox(width: 24),
                       SquareTile(
-                        onTap: (){},
+                        onTap: () {},
                         imagePath: 'asset/img/apple_logo.png',
                       ),
                     ],
