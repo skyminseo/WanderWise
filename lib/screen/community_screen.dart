@@ -41,22 +41,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blueGrey[200],
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text('Travel Community'),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => MyPageScreen(),
-                ),
-              );
-            },
-            icon: Icon(Icons.person, size: 28),
-          ),
-        ],
+      backgroundColor: blueGreyColor,
+      appBar: CustomAppBar(title: 'Travel Community',
       ),
       body: Column(
         children: [
@@ -91,49 +77,57 @@ class _CommunityScreenState extends State<CommunityScreen> {
             ),
           ),
 
-          // post message
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 8,
-              right: 8,
-              bottom: 16.0,
-            ),
-            child: Row(
+          Container(
+            color: primaryColor,
+            child: Column(
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey[500],
+                // post message
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 16,
+                    left: 8,
+                    right: 8,
+                    bottom: 16,
                   ),
-                  padding: EdgeInsets.all(10),
-                  child: Icon(
-                    Icons.person,
-                    color: Colors.white,
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: darkBlueColor,
+                        ),
+                        padding: EdgeInsets.all(10),
+                        child: Icon(
+                          Icons.person,
+                          color: Colors.white,
+                        ),
+                      ),
+                      Expanded(
+                        child: TextfieldLayout(
+                          controller: textController,
+                          hintText: "Write your post..",
+                          obscureText: false,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: postMessage,
+                        icon: Icon(Icons.send_rounded),
+                      ),
+                    ],
                   ),
                 ),
-                Expanded(
-                  child: TextfieldLayout(
-                    controller: textController,
-                    hintText: "Write your post..",
-                    obscureText: false,
+
+                // logged in as
+                Text(
+                  "Logged in as: " + currentUser.email!,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                IconButton(
-                  onPressed: postMessage,
-                  icon: Icon(Icons.send_rounded),
-                ),
+                SizedBox(height: 24),
               ],
             ),
-          ),
-
-          // logged in as
-          Text(
-            "Logged in as: " + currentUser.email!,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          SizedBox(height: 24),
+          )
         ],
       ),
     );
