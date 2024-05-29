@@ -30,6 +30,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
         'UserEmail': currentUser.email,
         'Message': textController.text,
         'TimeStamp': Timestamp.now(),
+        'Likes': [],
       });
     }
     setState(() {
@@ -42,7 +43,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: blueGreyColor,
-      appBar: CustomAppBar(title: 'Travel Community',
+      appBar: CustomAppBar(
+        title: 'Travel Community',
       ),
       body: Column(
         children: [
@@ -62,6 +64,8 @@ class _CommunityScreenState extends State<CommunityScreen> {
                       return WallPost(
                         message: post['Message'],
                         user: post['UserEmail'],
+                        postId: post.id,
+                        likes: List<String>.from(post['Likes'] ?? []),
                       );
                     },
                   );
