@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wander_wise/components/button_layout.dart';
 import 'package:wander_wise/components/home_drawer.dart';
+import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/screen/my_page_screen.dart';
 import 'package:wander_wise/screen/predictor_screen.dart';
 import 'package:wander_wise/screen/start_screen.dart';
@@ -70,15 +72,19 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _Logo(),
-            _WelcomeText(),
-            _Plan(
-              selectedDate: selectedDate,
-              onPressed: onCalendarPressed,
-            ),
-            ElevatedButton(
-              onPressed: onCommunityPressed,
-              child: Text('Go to Community'),
-            ),
+            Expanded(
+              child: Column(
+                children: [
+                  _WelcomeText(),
+                  const SizedBox(height: 20),
+                  _Plan(
+                    onPressed: onCalendarPressed,
+                  ),
+                  const SizedBox(height: 20),
+                  _CommunityButton(),
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -139,11 +145,9 @@ class _WelcomeText extends StatelessWidget {
 }
 
 class _Plan extends StatelessWidget {
-  final DateTime selectedDate;
   final VoidCallback onPressed;
 
   const _Plan({
-    required this.selectedDate,
     required this.onPressed,
     super.key,
   });
@@ -153,48 +157,12 @@ class _Plan extends StatelessWidget {
     final now = DateTime.now();
     final textTheme = Theme.of(context).textTheme;
 
-    return Expanded(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              onSettingScreenPressed(context);
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.grey[50],
-              foregroundColor: Colors.blueGrey,
-              textStyle: TextStyle(
-                fontSize: 20.0,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            child: Text(
-              "Let's make a plan!",
-            ),
-          ),
-          Column(
-            children: [
-              Text(
-                '${selectedDate.year}.${selectedDate.month}.${selectedDate.day}',
-                style: textTheme.bodyLarge,
-              ),
-              IconButton(
-                iconSize: 80.0,
-                color: Colors.deepOrange[400],
-                onPressed: onPressed,
-                icon: Icon(
-                  Icons.calendar_month_rounded,
-                ),
-              ),
-              Text(
-                'D-${selectedDate.difference(now).inDays}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ],
-          )
-        ],
-      ),
+    return ButtonLayout(
+      onTap: () {
+        onSettingScreenPressed(context);
+      },
+      text: "Let's predict flight prices!",
+      buttonColor: blueColor,
     );
   }
 
@@ -204,6 +172,27 @@ class _Plan extends StatelessWidget {
         builder: (BuildContext context) {
           return PredictorScreen();
         },
+      ),
+    );
+  }
+}
+
+class _CommunityButton extends StatelessWidget {
+  const _CommunityButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: ButtonLayout(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => CommunityScreen(),
+            ),
+          );
+        },
+        text: 'Go to Community!',
+        buttonColor: darkBlueColor,
       ),
     );
   }

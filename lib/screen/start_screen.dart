@@ -13,7 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wander_wise/screen/register_screen.dart';
 
 class StartScreen extends StatefulWidget {
-  StartScreen({super.key});
+  const StartScreen({super.key});
 
   @override
   State<StartScreen> createState() => _StartScreenState();
@@ -32,7 +32,7 @@ class _StartScreenState extends State<StartScreen> {
 
     // Timer for PageView
     timer = Timer.periodic(
-      Duration(seconds: 4),
+      const Duration(seconds: 4),
           (timer) {
         if (controller.page != null) {
           int currentPage = controller.page!.toInt();
@@ -84,7 +84,7 @@ class _StartScreenState extends State<StartScreen> {
               height: 500,
               child: PageView(
                 controller: controller,
-                children: [
+                children: const [
                   FlightCard(),
                   LuggageCard(),
                   TicketCard(),
@@ -97,8 +97,8 @@ class _StartScreenState extends State<StartScreen> {
           SmoothPageIndicator(
             controller: controller,
             count: 5,
-            effect: ExpandingDotsEffect(
-              activeDotColor: Colors.blueGrey,
+            effect: const ExpandingDotsEffect(
+              activeDotColor: blueColor,
               dotHeight: 20,
               dotWidth: 20,
               spacing: 8.0,
@@ -115,22 +115,20 @@ class _StartScreenState extends State<StartScreen> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return RegisterScreen(onTap: (){
-                            LoginOrRegisterScreen();
-                          });
+                          return const LoginOrRegisterScreen();
                         },
                       ),
                     );
                   },
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 _LoginButton(
                   buttonContent: 'I already have an account',
                   onTap: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (BuildContext context) {
-                          return LoginOrRegisterScreen();
+                          return const LoginOrRegisterScreen();
                         },
                       ),
                     );
@@ -162,7 +160,7 @@ class _StartButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: primaryColor,
         foregroundColor: Colors.white,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.white,
           fontSize: 16.0,
           fontWeight: FontWeight.w700,
@@ -193,7 +191,7 @@ class _LoginButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.grey[50],
         foregroundColor: Colors.blueGrey,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           fontSize: 16.0,
           fontWeight: FontWeight.w700,
         ),

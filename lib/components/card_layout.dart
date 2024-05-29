@@ -25,7 +25,7 @@ class CardLayout extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
                 child: Container(
-                  color: Colors.blueGrey,
+                  color: blueColor,
                   child: Padding(
                       padding: const EdgeInsets.all(32.0), child: iconImage),
                 ),
