@@ -116,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 25),
                   isLoading
                       ? CircularProgressIndicator(
-                          color: primaryColor,
+                          color: darkBlueColor,
                           strokeWidth: 4.0,
                         )
                       : LoginButton(

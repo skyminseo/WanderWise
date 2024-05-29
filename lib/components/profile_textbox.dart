@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wander_wise/resources/color.dart';
 
 class ProfileTextbox extends StatelessWidget {
   final String content;
@@ -18,13 +19,13 @@ class ProfileTextbox extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: blueGreyColor,
         borderRadius: BorderRadius.circular(16),
       ),
       padding: EdgeInsets.only(
-        left: 24,
+        left: 16,
         right: 16,
-        bottom: 16,
+        bottom: 8,
       ),
       margin: EdgeInsets.only(
         left: 20,
@@ -41,20 +42,38 @@ class ProfileTextbox extends StatelessWidget {
               Text(
                 sectionName,
                 style: TextStyle(
-                  color: Colors.grey[500],
+                  color: Colors.grey[600],
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: onPressed,
                 icon: icons,
-                color: Colors.grey[500],
+                color: Colors.grey[600],
               ),
             ],
           ),
 
           // text
-          Text(
-            content,
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8)
+                  ),
+                  padding: EdgeInsets.all(12),
+                  margin: EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    content,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

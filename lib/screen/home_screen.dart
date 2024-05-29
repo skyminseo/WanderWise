@@ -135,7 +135,7 @@ class _WelcomeText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      'Hello! ' + user.email!,
+      'Hello, ' + user.email!.split('@')[0]! + '!',
       style: TextStyle(
         fontSize: 20,
         fontWeight: FontWeight.w700,
@@ -191,7 +191,7 @@ class _CommunityButton extends StatelessWidget {
             ),
           );
         },
-        text: 'Go to Community!',
+        text: 'Go to community!',
         buttonColor: darkBlueColor,
       ),
     );
