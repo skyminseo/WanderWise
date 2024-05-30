@@ -45,6 +45,8 @@ dependencies:
   flutter_native_splash: ^2.4.0
   cloud_firestore: ^4.17.5
   google_nav_bar: ^5.0.6
+  dropdown_button2: ^2.3.9
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:

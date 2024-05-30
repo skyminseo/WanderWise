@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wander_wise/resources/color.dart';
 
 class ButtonLayout extends StatelessWidget {
   final Function()? onTap;
   final String text;
   final Color buttonColor;
+  final Color textColor;
 
   const ButtonLayout({
     required this.onTap,
     required this.text,
     required this.buttonColor,
+    required this.textColor,
     super.key,
   });
 
@@ -25,8 +28,8 @@ class ButtonLayout extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
-              color: Colors.white,
+            style: GoogleFonts.notoSans(
+              color: textColor,
               fontWeight: FontWeight.w700,
               fontSize: 16,
             ),

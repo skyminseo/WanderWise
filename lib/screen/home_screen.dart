@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:wander_wise/components/button_layout.dart';
 import 'package:wander_wise/components/home_drawer.dart';
 import 'package:wander_wise/resources/color.dart';
@@ -66,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       backgroundColor: Colors.blue[50],
       body: SafeArea(
-        bottom: false,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -106,7 +106,7 @@ class _WelcomeText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'Hello, ' + user.email!.split('@')[0]! + '!',
-      style: TextStyle(
+      style: GoogleFonts.notoSans(
         fontSize: 20,
         fontWeight: FontWeight.w700,
       ),
@@ -124,7 +124,7 @@ class _Plan extends StatelessWidget {
         onPredictorScreenPressed(context);
       },
       text: "Let's predict flight prices!",
-      buttonColor: blueColor,
+      buttonColor: blueColor, textColor: Colors.white,
     );
   }
 
@@ -154,7 +154,7 @@ class _CommunityButton extends StatelessWidget {
           );
         },
         text: 'Go to community!',
-        buttonColor: darkBlueColor,
+        buttonColor: darkBlueColor, textColor: Colors.white,
       ),
     );
   }

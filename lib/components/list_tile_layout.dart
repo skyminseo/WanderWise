@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ListTileLayout extends StatelessWidget {
   final IconData icon;
@@ -24,9 +25,9 @@ class ListTileLayout extends StatelessWidget {
         onTap: onTap,
         title: Text(
           text,
-          style: TextStyle(
-            color: Colors.grey[900],
-            fontWeight: FontWeight.w400,
+          style: GoogleFonts.notoSans(
+            color: Colors.grey[800],
+            fontWeight: FontWeight.w500,
           ),
         ),
       ),

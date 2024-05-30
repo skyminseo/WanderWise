@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:wander_wise/components/button_layout.dart';
 import 'package:wander_wise/components/custom_appbar.dart';
+import 'package:wander_wise/components/searchable_dropdown.dart';
 import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/resources/destination_cities.dart';
 import 'package:wander_wise/resources/source_cities.dart';
@@ -25,6 +27,14 @@ class _PredictorScreenState extends State<PredictorScreen> {
 
   List<String> times = ['Morning', 'Afternoon', 'Evening', 'Night'];
   List<int> numberOfChanges = [0, 1, 2, 3];
+
+  @override
+  void initState() {
+    super.initState();
+    departDateController.text = "${selectedDepartureDate.day}"
+        "/${selectedDepartureDate.month}"
+        "/${selectedDepartureDate.year}";
+  }
 
   Future<void> fetchPredictions() async {
     showDialog(
@@ -106,14 +116,17 @@ class _PredictorScreenState extends State<PredictorScreen> {
                     setState(() {
                       selectedDepartureDate = newDateTime;
                       departDateController.text =
-                      "${newDateTime.day}/${newDateTime.month}/${newDateTime.year}";
+                          "${newDateTime.day}/${newDateTime.month}/${newDateTime.year}";
                     });
                   },
                 ),
               ),
             ),
             CupertinoButton(
-              child: Text('OK'),
+              child: Text(
+                'OK',
+                style: TextStyle(color: Colors.grey[700]),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -132,111 +145,118 @@ class _PredictorScreenState extends State<PredictorScreen> {
     return Scaffold(
       appBar: CustomAppBar(title: 'SEARCH FLIGHTS'),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              DropdownButtonFormField(
-                value: selectedSourceCity,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedSourceCity = newValue!;
-                  });
-                },
-                items: sourceCities.map((city) {
-                  return DropdownMenuItem(
-                    child: Text(city),
-                    value: city,
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: 'Source City'),
+        child: Column(
+          children: [
+            Image.asset(
+              'asset/img/flight.png',
+              fit: BoxFit.cover,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SearchableDropdown<String>(
+                  labelText: 'Source City',
+                  selectedValue: selectedSourceCity,
+                  items: sourceCities,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedSourceCity = newValue!;
+                    });
+                  },
+                  boxColor: darkPrimaryColor,
+                ),
+                SearchableDropdown<String>(
+                  labelText: 'Destination City',
+                  selectedValue: selectedDestinationCity,
+                  items: destinationCities,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedDestinationCity = newValue!;
+                    });
+                  },
+                  boxColor: darkPrimaryColor,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SearchableDropdown<String>(
+                  labelText: 'Departure Time',
+                  selectedValue: selectedDepartureTime,
+                  items: times,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedDepartureTime = newValue!;
+                    });
+                  },
+                  boxColor: blueColor,
+                ),
+                SearchableDropdown<String>(
+                  labelText: 'Arrival Time',
+                  selectedValue: selectedArrivalTime,
+                  items: times,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedArrivalTime = newValue!;
+                    });
+                  },
+                  boxColor: blueColor,
+                ),
+              ],
+            ),
+            SearchableDropdown<int>(
+              labelText: 'Number of Changes',
+              selectedValue: selectedNumberOfChanges,
+              items: numberOfChanges,
+              onChanged: (int? newValue) {
+                setState(() {
+                  selectedNumberOfChanges = newValue!;
+                });
+              },
+              boxColor: darkBlueColor,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: blueGreyColor,
+                borderRadius: BorderRadius.circular(12),
               ),
-              DropdownButtonFormField(
-                value: selectedDestinationCity,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedDestinationCity = newValue!;
-                  });
-                },
-                items: destinationCities.map((city) {
-                  return DropdownMenuItem(
-                    child: Text(city),
-                    value: city,
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: 'Destination City'),
-              ),
-              DropdownButtonFormField(
-                value: selectedDepartureTime,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedDepartureTime = newValue!;
-                  });
-                },
-                items: times.map((time) {
-                  return DropdownMenuItem(
-                    child: Text(time),
-                    value: time,
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: 'Departure Time'),
-              ),
-              DropdownButtonFormField(
-                value: selectedArrivalTime,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    selectedArrivalTime = newValue!;
-                  });
-                },
-                items: times.map((time) {
-                  return DropdownMenuItem(
-                    child: Text(time),
-                    value: time,
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: 'Arrival Time'),
-              ),
-              DropdownButtonFormField(
-                value: selectedNumberOfChanges,
-                onChanged: (int? newValue) {
-                  setState(() {
-                    selectedNumberOfChanges = newValue!;
-                  });
-                },
-                items: numberOfChanges.map((change) {
-                  return DropdownMenuItem(
-                    child: Text(change.toString()),
-                    value: change,
-                  );
-                }).toList(),
-                decoration: InputDecoration(labelText: 'Number of Changes'),
-              ),
-              GestureDetector(
-                onTap: () => _showDatePicker(context),
-                child: AbsorbPointer(
-                  child: TextFormField(
-                    controller: departDateController,
-                    decoration: InputDecoration(
-                      labelText: 'Departure Date',
-                      hintText: 'dd/MM/yyyy',
+              padding: EdgeInsets.all(16),
+              margin: EdgeInsets.all(12),
+              child: Container(
+                height: 40,
+                width: 150,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: departDateController,
+                        decoration: InputDecoration(
+                          labelText: 'Departure Date',
+                          labelStyle: TextStyle(
+                            color: Colors.grey[800],
+                          ),
+                          border: InputBorder.none,
+                        ),
+                      ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () => _showDatePicker(context),
+                      child:
+                          Icon(Icons.calendar_today, color: Colors.grey[800]),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: fetchPredictions,
-                child: Text(
-                  'Get Predictions',
-                  style: TextStyle(
-                    color: Colors.blueGrey,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
-          ),
+            ),
+            SizedBox(height: 20),
+            ButtonLayout(
+              onTap: fetchPredictions,
+              text: 'Get Predictions!',
+              buttonColor: primaryColor,
+              textColor: Colors.black87,
+            ),
+          ],
         ),
       ),
     );
