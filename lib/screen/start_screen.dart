@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:wander_wise/cards/flight_card.dart';
-import 'package:wander_wise/cards/luggage_card.dart';
-import 'package:wander_wise/cards/ticket_card.dart';
-import 'package:wander_wise/cards/travel_card.dart';
-import 'package:wander_wise/cards/weather_card.dart';
+import 'package:wander_wise/feature_cards/flight_card.dart';
+import 'package:wander_wise/feature_cards/luggage_card.dart';
+import 'package:wander_wise/feature_cards/ticket_card.dart';
+import 'package:wander_wise/feature_cards/travel_card.dart';
+import 'package:wander_wise/feature_cards/weather_card.dart';
 import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/screen/home_screen.dart';
 import 'package:wander_wise/screen/login_or_register_screen.dart';

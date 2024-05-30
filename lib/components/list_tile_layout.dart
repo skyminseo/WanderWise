@@ -20,7 +20,7 @@ class ListTileLayout extends StatelessWidget {
       child: ListTile(
         leading: Icon(
           icon,
-          color: Colors.grey[600],
+          color: Colors.grey[700],
         ),
         onTap: onTap,
         title: Text(

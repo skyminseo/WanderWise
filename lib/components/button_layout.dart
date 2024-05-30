@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:wander_wise/resources/color.dart';
 
 class ButtonLayout extends StatelessWidget {
   final Function()? onTap;
   final String text;
   final Color buttonColor;
   final Color textColor;
+  final IconData? buttonIcon;
+  final double? width;
+  final double? height;
 
   const ButtonLayout({
     required this.onTap,
     required this.text,
     required this.buttonColor,
     required this.textColor,
+    this.buttonIcon,
+    this.width,
+    this.height,
     super.key,
   });
 
@@ -21,19 +26,28 @@ class ButtonLayout extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        width: width,
+        height: height,
         padding: EdgeInsets.all(20),
-        margin: EdgeInsets.symmetric(horizontal: 25),
+        margin: EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
             color: buttonColor, borderRadius: BorderRadius.circular(16.0)),
-        child: Center(
-          child: Text(
-            text,
-            style: GoogleFonts.notoSans(
-              color: textColor,
-              fontWeight: FontWeight.w700,
-              fontSize: 16,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center, // Center text and icon
+          children: [
+            Text(
+              text,
+              style: GoogleFonts.notoSans(
+                color: textColor,
+                fontWeight: FontWeight.w700,
+                fontSize: 16,
+              ),
             ),
-          ),
+            if (buttonIcon != null) ...[
+              SizedBox(width: 16), // Add spacing between text and icon
+              Icon(buttonIcon, color: textColor),
+            ],
+          ],
         ),
       ),
     );
