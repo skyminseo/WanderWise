@@ -14,30 +14,52 @@ class CardLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(40.0),
+      padding: const EdgeInsets.all(60.0),
       child: Container(
         decoration: BoxDecoration(
-            color: primaryColor, borderRadius: BorderRadius.circular(64.0)),
+          color: primaryColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(64),
+            topRight: Radius.circular(64),
+            bottomLeft: Radius.circular(32),
+            bottomRight: Radius.circular(32),
+          ),
+        ),
+        padding: EdgeInsets.all(20),
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Container(
-                  color: blueColor,
-                  child: Padding(
-                      padding: const EdgeInsets.all(32.0), child: iconImage),
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(48),
+                topRight: Radius.circular(48),
+                bottomLeft: Radius.circular(32),
+                bottomRight: Radius.circular(32),
+              ),
+              child: Container(
+                color: blueColor,
+                child: Padding(
+                    padding: const EdgeInsets.all(32.0), child: iconImage),
               ),
             ),
-            Center(
-              child: Text(
-                content,
-                style: TextStyle(
-                  color: Colors.blueGrey,
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w700,
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white,
+              ),
+              padding: EdgeInsets.all(16),
+              margin: EdgeInsets.only(
+                top: 16,
+                left: 4,
+                right: 4,
+              ),
+              child: Center(
+                child: Text(
+                  content,
+                  style: TextStyle(
+                    color: Colors.blueGrey,
+                    fontSize: 12.0,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),

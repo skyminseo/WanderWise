@@ -33,7 +33,7 @@ class _StartScreenState extends State<StartScreen> {
     // Timer for PageView
     timer = Timer.periodic(
       const Duration(seconds: 4),
-          (timer) {
+      (timer) {
         if (controller.page != null) {
           int currentPage = controller.page!.toInt();
           int nextPage = currentPage + 1;
@@ -77,11 +77,17 @@ class _StartScreenState extends State<StartScreen> {
     return Scaffold(
       backgroundColor: Colors.blue[50],
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          SizedBox(height: 60),
+          Image.asset(
+            'asset/img/wanderwise_logo.png',
+            height: 120,
+            width: 120,
+          ),
           ClipRRect(
             child: SizedBox(
-              height: 500,
+              height: 480,
               child: PageView(
                 controller: controller,
                 children: const [
@@ -99,10 +105,13 @@ class _StartScreenState extends State<StartScreen> {
             count: 5,
             effect: const ExpandingDotsEffect(
               activeDotColor: blueColor,
-              dotHeight: 20,
-              dotWidth: 20,
+              dotHeight: 16,
+              dotWidth: 16,
               spacing: 8.0,
             ),
+          ),
+          SizedBox(
+            height: 20,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -158,7 +167,7 @@ class _StartButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
-        backgroundColor: primaryColor,
+        backgroundColor: darkPrimaryColor,
         foregroundColor: Colors.white,
         textStyle: const TextStyle(
           color: Colors.white,
@@ -190,7 +199,7 @@ class _LoginButton extends StatelessWidget {
       onPressed: onTap,
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.grey[50],
-        foregroundColor: Colors.blueGrey,
+        foregroundColor: darkPrimaryColor,
         textStyle: const TextStyle(
           fontSize: 16.0,
           fontWeight: FontWeight.w700,

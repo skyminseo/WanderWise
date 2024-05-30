@@ -126,6 +126,7 @@ class _CommunityScreenState extends State<CommunityScreen> {
                   "Logged in as: " + currentUser.email!,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    color: Colors.grey[700],
                   ),
                 ),
                 SizedBox(height: 24),
