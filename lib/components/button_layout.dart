@@ -38,8 +38,7 @@ class ButtonLayout extends StatelessWidget {
             right: 8,
           ),
           child: Row(
-            mainAxisAlignment:
-                MainAxisAlignment.spaceBetween, // Center text and icon
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 text,

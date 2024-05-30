@@ -43,14 +43,17 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
       ),
       margin: EdgeInsets.only(left: 8, right: 8, top: 12, bottom: 12),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            widget.labelText,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
+          Container(
+            margin: EdgeInsets.only(left: 8),
+            child: Text(
+              widget.labelText,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
             ),
           ),
           SizedBox(height: 8),
