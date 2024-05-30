@@ -21,22 +21,24 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(widget.attraction.name),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        foregroundColor: Colors.grey[900],
-      ),
-      body: Column(
-        children: [
-          /// listview of place details
-          Expanded(
-            child: ListView(
-              children: [
-                Image.asset(
-                  widget.attraction.imagePath,
-                ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            expandedHeight: 300.0,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Image.asset(
+                widget.attraction.imagePath,
+                fit: BoxFit.cover,
+              ),
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            foregroundColor: Colors.grey[900],
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
                 SizedBox(height: 24),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -121,18 +123,23 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
               ],
             ),
           ),
-
-          /// content + add to favorites button
-          Container(
-            color: primaryColor,
-            padding: EdgeInsets.all(24),
-            child: Row(
-              children: [
-                Text('Add to favories'),
-              ],
-            ),
-          )
         ],
+      ),
+      bottomNavigationBar: Container(
+        color: primaryColor,
+        padding: EdgeInsets.all(24),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Add to favorites',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
