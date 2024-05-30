@@ -6,10 +6,11 @@ import 'package:wander_wise/components/button_layout.dart';
 import 'package:wander_wise/components/home_drawer.dart';
 import 'package:wander_wise/resources/attractions_list.dart';
 import 'package:wander_wise/resources/color.dart';
+import 'package:wander_wise/screen/attraction_detail_screen.dart';
 import 'package:wander_wise/screen/my_page_screen.dart';
 import 'package:wander_wise/screen/predictor_screen.dart';
 import 'package:wander_wise/screen/start_screen.dart';
-import 'package:wander_wise/screen/community_screen.dart'; // Import CommunityScreen
+import 'package:wander_wise/screen/community_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,14 +23,12 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime selectedDate = DateTime.now();
   final user = FirebaseAuth.instance.currentUser!;
 
-  List attractionMenu = attractions;
-
   void signUserOut(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => StartScreen()),
-          (route) => false,
+      (route) => false,
     );
   }
 
@@ -75,42 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _WelcomeText(),
-            const _Logo(),
-            Padding(
-              padding: EdgeInsets.only(left: 32, bottom: 16),
-              child: Text(
-                'F E A T U R E S',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
+            _Logo(),
+            _FeatureTitle(),
             _PredictorButton(),
             SizedBox(height: 10),
             _CommunityButton(),
-
             SizedBox(height: 30),
-            Padding(
-              padding: EdgeInsets.only(left: 32, bottom: 16),
-              child: Text(
-                'P O P U L A R',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 305, // Set a height to ensure the ListView.builder is constrained
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: attractions.length,
-                itemBuilder: (context, index) => AttractionCards(
-                  attraction: attractionMenu[index],
-                ),
-              ),
-            ),
+            _PopularTitle(),
+            _Attractions(),
           ],
         ),
       ),
@@ -142,6 +113,42 @@ class _WelcomeText extends StatelessWidget {
             fontSize: 20,
             fontWeight: FontWeight.w700,
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FeatureTitle extends StatelessWidget {
+  const _FeatureTitle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 24, bottom: 12),
+      child: Text(
+        'F E A T U R E S',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+    );
+  }
+}
+
+class _PopularTitle extends StatelessWidget {
+  const _PopularTitle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 24, bottom: 12),
+      child: Text(
+        'P O P U L A R',
+        style: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w700,
         ),
       ),
     );
@@ -206,6 +213,47 @@ class _Logo extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 120, vertical: 16),
       child: Image.asset('asset/img/wanderwise_logo.png'),
+    );
+  }
+}
+
+class _Attractions extends StatefulWidget {
+  const _Attractions({super.key});
+
+  @override
+  State<_Attractions> createState() => _AttractionsState();
+}
+
+class _AttractionsState extends State<_Attractions> {
+  List attractionMenu = attractions;
+
+  void navigateToAttractionDetails(int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AttractionDetailScreen(
+          index: index,
+          attraction: attractionMenu[index],
+        ), // Pass the index here
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 305,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: attractions.length,
+        itemBuilder: (context, index) => GestureDetector(
+          onTap: () =>
+              navigateToAttractionDetails(index), // Navigate with index
+          child: AttractionCards(
+            attraction: attractionMenu[index],
+          ),
+        ),
+      ),
     );
   }
 }

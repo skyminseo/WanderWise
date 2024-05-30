@@ -3,12 +3,16 @@ class Attractions {
   String price;
   String imagePath;
   String rating;
+  String description;
+  String averagePrice;
 
   Attractions({
     required this.name,
     required this.price,
     required this.rating,
     required this.imagePath,
+    required this.description,
+    required this.averagePrice,
   });
 
   String get _name => name;

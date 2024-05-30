@@ -32,22 +32,29 @@ class ButtonLayout extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
             color: buttonColor, borderRadius: BorderRadius.circular(16.0)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // Center text and icon
-          children: [
-            Text(
-              text,
-              style: GoogleFonts.notoSans(
-                color: textColor,
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
+        child: Padding(
+          padding: const EdgeInsets.only(
+            left: 8,
+            right: 8,
+          ),
+          child: Row(
+            mainAxisAlignment:
+                MainAxisAlignment.spaceBetween, // Center text and icon
+            children: [
+              Text(
+                text,
+                style: GoogleFonts.notoSans(
+                  color: textColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                ),
               ),
-            ),
-            if (buttonIcon != null) ...[
-              SizedBox(width: 16), // Add spacing between text and icon
-              Icon(buttonIcon, color: textColor),
+              if (buttonIcon != null) ...[
+                SizedBox(width: 16), // Add spacing between text and icon
+                Icon(buttonIcon, color: textColor),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
