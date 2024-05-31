@@ -16,7 +16,7 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: primaryColor,
+      backgroundColor: Colors.grey[50],
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

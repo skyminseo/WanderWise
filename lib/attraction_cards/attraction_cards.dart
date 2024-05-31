@@ -18,14 +18,23 @@ class AttractionCards extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.grey[100],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 4,
+              blurRadius: 8,
+              offset: Offset(0, 3),
+            ),
+          ],
           borderRadius: BorderRadius.circular(20),
         ),
         padding: EdgeInsets.only(
           bottom: 4,
         ),
         margin: EdgeInsets.only(
+          top: 8,
           left: 16,
-          bottom: 76,
+          bottom: 70,
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),

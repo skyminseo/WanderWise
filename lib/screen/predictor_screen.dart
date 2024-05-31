@@ -146,6 +146,15 @@ class _PredictorScreenState extends State<PredictorScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: Colors.white,
+              ),
+            ),
             title: Text(
               'Ticket Prices Prediction',
               style: TextStyle(
@@ -340,7 +349,7 @@ class _PredictorScreenState extends State<PredictorScreen> {
                     ButtonLayout(
                       onTap: fetchPredictions,
                       text: 'Get Predictions!',
-                      buttonColor: Colors.transparent,
+                      buttonColor: blueGreyColor,
                       textColor: Colors.grey[800]!,
                       buttonIcon: Icons.arrow_forward_ios_rounded,
                       border: Border.all(

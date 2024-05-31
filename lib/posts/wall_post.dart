@@ -59,6 +59,14 @@ class _WallPostState extends State<WallPost> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 3,
+            blurRadius: 8,
+            offset: Offset(0, 3),
+          ),
+        ],
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
       ),

@@ -106,6 +106,14 @@ class _WelcomeText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 8,
+            offset: Offset(0, 3),
+          ),
+        ],
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(12)
       ),
@@ -130,13 +138,25 @@ class _WelcomeText extends StatelessWidget {
   }
 }
 
+class _Logo extends StatelessWidget {
+  const _Logo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 120, vertical: 16),
+      child: Image.asset('asset/img/wanderwise_logo.png'),
+    );
+  }
+}
+
 class _FeatureTitle extends StatelessWidget {
   const _FeatureTitle({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 24, bottom: 12),
+      padding: EdgeInsets.only(left: 24, bottom: 16),
       child: Text(
         'F E A T U R E S',
         style: TextStyle(
@@ -218,17 +238,6 @@ class _CommunityButton extends StatelessWidget {
   }
 }
 
-class _Logo extends StatelessWidget {
-  const _Logo({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 120, vertical: 16),
-      child: Image.asset('asset/img/wanderwise_logo.png'),
-    );
-  }
-}
 
 class _Attractions extends StatefulWidget {
   const _Attractions({super.key});
