@@ -41,7 +41,7 @@ class _SearchableDropdownState<T> extends State<SearchableDropdown<T>> {
         left: 8,
         right: 8,
       ),
-      margin: EdgeInsets.only(left: 8, right: 8, top: 12, bottom: 12),
+      margin: EdgeInsets.only(top: 12, bottom: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

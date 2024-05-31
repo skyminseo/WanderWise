@@ -146,6 +146,13 @@ class _PredictorScreenState extends State<PredictorScreen> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            title: Text(
+              'Ticket Prices Prediction',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
             expandedHeight: 200.0,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -163,133 +170,163 @@ class _PredictorScreenState extends State<PredictorScreen> {
               [
                 Column(
                   children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: SearchableDropdown<String>(
-                            labelText: 'Source City',
-                            selectedValue: selectedSourceCity,
-                            items: sourceCities,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedSourceCity = newValue!;
-                              });
-                            },
-                            boxColor: darkPrimaryColor,
-                          ),
-                        ),
-                        SizedBox(width: 8),
-                        Flexible(
-                          child: SearchableDropdown<String>(
-                            labelText: 'Destination City',
-                            selectedValue: selectedDestinationCity,
-                            items: destinationCities,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedDestinationCity = newValue!;
-                              });
-                            },
-                            boxColor: darkPrimaryColor,
-                          ),
-                        ),
-                      ],
+                    SizedBox(height: 12),
+                    Text(
+                      'Choose Your Travel Preferences',
+                      style: TextStyle(
+                        color: darkBlueColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                    SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: SearchableDropdown<String>(
-                            labelText: 'Departure Time',
-                            selectedValue: selectedDepartureTime,
-                            items: times,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedDepartureTime = newValue!;
-                              });
-                            },
-                            boxColor: blueColor,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        children: [
+                          Flexible(
+                            child: SearchableDropdown<String>(
+                              labelText: 'Source City',
+                              selectedValue: selectedSourceCity,
+                              items: sourceCities,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedSourceCity = newValue!;
+                                });
+                              },
+                              boxColor: darkPrimaryColor,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 8),
-                        Flexible(
-                          child: SearchableDropdown<String>(
-                            labelText: 'Arrival Time',
-                            selectedValue: selectedArrivalTime,
-                            items: times,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedArrivalTime = newValue!;
-                              });
-                            },
-                            boxColor: blueColor,
+                          SizedBox(width: 8),
+                          Flexible(
+                            child: SearchableDropdown<String>(
+                              labelText: 'Destination City',
+                              selectedValue: selectedDestinationCity,
+                              items: destinationCities,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedDestinationCity = newValue!;
+                                });
+                              },
+                              boxColor: darkPrimaryColor,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                    SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Flexible(
-                          child: SearchableDropdown<int>(
-                            labelText: 'Number of Changes',
-                            selectedValue: selectedNumberOfChanges,
-                            items: numberOfChanges,
-                            onChanged: (int? newValue) {
-                              setState(() {
-                                selectedNumberOfChanges = newValue!;
-                              });
-                            },
-                            boxColor: darkBlueColor,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: SearchableDropdown<String>(
+                              labelText: 'Departure Time',
+                              selectedValue: selectedDepartureTime,
+                              items: times,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedDepartureTime = newValue!;
+                                });
+                              },
+                              boxColor: blueColor,
+                            ),
                           ),
-                        ),
-                        SizedBox(width: 8),
-                        Flexible(
-                          child: GestureDetector(
-                            onTap: () => _showDatePicker(context),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: blueGreyColor,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 20),
-                              margin: EdgeInsets.symmetric(horizontal: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Departure Date',
-                                    style: TextStyle(
-                                      color: Colors.grey[800],
-                                      fontWeight: FontWeight.w800,
+                          SizedBox(width: 8),
+                          Flexible(
+                            child: SearchableDropdown<String>(
+                              labelText: 'Arrival Time',
+                              selectedValue: selectedArrivalTime,
+                              items: times,
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedArrivalTime = newValue!;
+                                });
+                              },
+                              boxColor: blueColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Flexible(
+                            child: SearchableDropdown<int>(
+                              labelText: 'Number of Changes',
+                              selectedValue: selectedNumberOfChanges,
+                              items: numberOfChanges,
+                              onChanged: (int? newValue) {
+                                setState(() {
+                                  selectedNumberOfChanges = newValue!;
+                                });
+                              },
+                              boxColor: darkBlueColor,
+                            ),
+                          ),
+                          SizedBox(width: 8),
+                          Flexible(
+                            child: GestureDetector(
+                              onTap: () => _showDatePicker(context),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: darkBlueColor,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 14, vertical: 8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Departure Date',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          departDateController.text,
-                                          style: TextStyle(
-                                            color: Colors.grey[800],
-                                            fontSize: 16,
+                                    SizedBox(height: 8),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.white,
+                                      ),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
+                                      margin: EdgeInsets.only(
+                                        bottom: 4,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              departDateController.text,
+                                              style: TextStyle(
+                                                color: Colors.grey[800],
+                                                fontSize: 16,
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                          Icon(
+                                            Icons.calendar_month_rounded,
+                                            size: 40,
+                                            color: Colors.grey[800],
+                                          ),
+                                        ],
                                       ),
-                                      Icon(
-                                        Icons.calendar_month_rounded,
-                                        size: 40,
-                                        color: darkBlueColor,
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                     SizedBox(height: 16),
                     Divider(
@@ -303,9 +340,13 @@ class _PredictorScreenState extends State<PredictorScreen> {
                     ButtonLayout(
                       onTap: fetchPredictions,
                       text: 'Get Predictions!',
-                      buttonColor: primaryColor,
+                      buttonColor: Colors.transparent,
                       textColor: Colors.grey[800]!,
                       buttonIcon: Icons.arrow_forward_ios_rounded,
+                      border: Border.all(
+                        color: darkBlueColor,
+                        width: 4,
+                      ),
                     ),
                   ],
                 ),

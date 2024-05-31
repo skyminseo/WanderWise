@@ -9,6 +9,7 @@ class ButtonLayout extends StatelessWidget {
   final IconData? buttonIcon;
   final double? width;
   final double? height;
+  final BoxBorder? border;
 
   const ButtonLayout({
     required this.onTap,
@@ -18,6 +19,7 @@ class ButtonLayout extends StatelessWidget {
     this.buttonIcon,
     this.width,
     this.height,
+    this.border,
     super.key,
   });
 
@@ -31,7 +33,10 @@ class ButtonLayout extends StatelessWidget {
         padding: EdgeInsets.all(20),
         margin: EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-            color: buttonColor, borderRadius: BorderRadius.circular(16.0)),
+          border: border,
+          color: buttonColor,
+          borderRadius: BorderRadius.circular(16.0),
+        ),
         child: Padding(
           padding: const EdgeInsets.only(
             left: 8,
