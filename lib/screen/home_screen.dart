@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => StartScreen()),
-          (route) => false,
+      (route) => false,
     );
   }
 
@@ -101,7 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   topRight: Radius.circular(36),
                 ),
                 child: Container(
-                  color: Colors.grey[50], // Ensure the color matches the background
+                  color: Colors
+                      .grey[50], // Ensure the color matches the background
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -162,13 +163,25 @@ class _WelcomeText extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Hello, ' + user.email!.split('@')[0]! + '!' + ' 👋',
-                  style: GoogleFonts.notoSans(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.grey[700],
-                  ),
+                Row(
+                  children: [
+                    Text(
+                      'Hello, ',
+                      style: GoogleFonts.notoSans(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    Text(
+                      user.email!.split('@')[0]! + '!' + ' 👋',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: blueColor,
+                      ),
+                    ),
+                  ],
                 ),
                 Row(
                   children: [
@@ -331,7 +344,8 @@ class _AttractionsState extends State<_Attractions> {
         scrollDirection: Axis.horizontal,
         itemCount: attractions.length,
         itemBuilder: (context, index) => GestureDetector(
-          onTap: () => navigateToAttractionDetails(index), // Navigate with index
+          onTap: () =>
+              navigateToAttractionDetails(index), // Navigate with index
           child: AttractionCards(
             attraction: attractionMenu[index],
           ),
