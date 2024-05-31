@@ -64,8 +64,8 @@ class _ButtonLayoutState extends State<ButtonLayout> {
             boxShadow: [
               BoxShadow(
                 color: Colors.black26,
-                blurRadius: 4,
-                offset: Offset(0, 4),
+                spreadRadius: 2,
+                blurRadius: 2,
               ),
             ],
           ),

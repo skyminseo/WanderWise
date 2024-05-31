@@ -28,36 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => StartScreen()),
-      (route) => false,
+          (route) => false,
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
-        title: Image.asset(
-          'asset/img/branding_image.png',
-          width: 148,
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => MyPageScreen(),
-                ),
-              );
-            },
-            icon: Icon(
-              Icons.person,
-              size: 28,
-            ),
-          ),
-        ],
-      ),
       drawer: HomeDrawer(
         onProfileTap: () {
           Navigator.of(context).push(
@@ -69,21 +46,82 @@ class _HomeScreenState extends State<HomeScreen> {
         onSignOut: () => signUserOut(context),
       ),
       backgroundColor: blueGreyColor,
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _WelcomeText(),
-            _Logo(),
-            _FeatureTitle(),
-            _PredictorButton(),
-            SizedBox(height: 10),
-            _CommunityButton(),
-            SizedBox(height: 30),
-            _PopularTitle(),
-            _Attractions(),
-          ],
-        ),
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            backgroundColor: blueGreyColor,
+            pinned: true,
+            floating: true,
+            expandedHeight: 230.0,
+            flexibleSpace: FlexibleSpaceBar(
+              background: _WelcomeText(),
+              title: Image.asset(
+                'asset/img/branding_image.png',
+                width: 148,
+              ),
+              centerTitle: true,
+              titlePadding: EdgeInsets.only(top: 16.0),
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => MyPageScreen(),
+                    ),
+                  );
+                },
+                icon: Icon(
+                  Icons.person,
+                  size: 28,
+                ),
+              ),
+            ],
+          ),
+          SliverToBoxAdapter(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(36),
+                  topRight: Radius.circular(36),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 4,
+                    blurRadius: 4,
+                    offset: Offset(0, -3),
+                  ),
+                ],
+              ),
+              margin: EdgeInsets.only(top: 12),
+              child: ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(36),
+                  topRight: Radius.circular(36),
+                ),
+                child: Container(
+                  color: Colors.grey[50], // Ensure the color matches the background
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 30),
+                      _FeatureTitle(),
+                      _PredictorButton(),
+                      SizedBox(height: 10),
+                      _CommunityButton(),
+                      SizedBox(height: 30),
+                      _PopularTitle(),
+                      _Attractions(),
+                      _PopularTitle(),
+                      _Attractions(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -105,34 +143,58 @@ class _WelcomeText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 8,
-            offset: Offset(0, 3),
-          ),
-        ],
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12)
-      ),
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.2),
+          spreadRadius: 2,
+          blurRadius: 8,
+          offset: Offset(0, 3),
+        ),
+      ], color: blueGreyColor, borderRadius: BorderRadius.circular(12)),
       padding: EdgeInsets.symmetric(
-        horizontal: 12,
+        horizontal: 32,
         vertical: 8,
       ),
-      margin: EdgeInsets.only(
-        left: 16,
-        top: 8,
-      ),
-      child: Text(
-        textAlign: TextAlign.left,
-        'Hello, ' + user.email!.split('@')[0]! + '!' + ' 👋',
-        style: GoogleFonts.notoSans(
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: Colors.grey[800],
-        ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Hello, ' + user.email!.split('@')[0]! + '!' + ' 👋',
+                  style: GoogleFonts.notoSans(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[700],
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Welcome to ',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.grey[800],
+                      ),
+                    ),
+                    Text(
+                      'WanderWise!',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: darkBlueColor,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+          _Logo(),
+        ],
       ),
     );
   }
@@ -143,9 +205,10 @@ class _Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 120, vertical: 16),
-      child: Image.asset('asset/img/wanderwise_logo.png'),
+    return Image.asset(
+      'asset/img/edit_logo.png',
+      width: 100,
+      height: 100,
     );
   }
 }
@@ -158,10 +221,10 @@ class _FeatureTitle extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 24, bottom: 16),
       child: Text(
-        'F E A T U R E S',
+        'Features',
         style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
+          fontSize: 24,
+          fontWeight: FontWeight.w800,
           color: Colors.grey[800],
         ),
       ),
@@ -177,10 +240,10 @@ class _PopularTitle extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(left: 24, bottom: 12),
       child: Text(
-        'P O P U L A R',
+        'Popular',
         style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w700,
+          fontSize: 24,
+          fontWeight: FontWeight.w800,
           color: Colors.grey[800],
         ),
       ),
@@ -238,7 +301,6 @@ class _CommunityButton extends StatelessWidget {
   }
 }
 
-
 class _Attractions extends StatefulWidget {
   const _Attractions({super.key});
 
@@ -269,8 +331,7 @@ class _AttractionsState extends State<_Attractions> {
         scrollDirection: Axis.horizontal,
         itemCount: attractions.length,
         itemBuilder: (context, index) => GestureDetector(
-          onTap: () =>
-              navigateToAttractionDetails(index), // Navigate with index
+          onTap: () => navigateToAttractionDetails(index), // Navigate with index
           child: AttractionCards(
             attraction: attractionMenu[index],
           ),

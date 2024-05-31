@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:wander_wise/attraction_cards/attractions.dart';
 import 'package:wander_wise/components/button_layout.dart';
 import 'package:wander_wise/resources/color.dart';
+import 'package:wander_wise/screen/favorites_screen.dart';
+
+// Global list to store favorites
+List<Attractions> favoriteAttractions = [];
 
 class AttractionDetailScreen extends StatefulWidget {
   final Attractions attraction;
@@ -18,12 +22,40 @@ class AttractionDetailScreen extends StatefulWidget {
 }
 
 class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
+  bool isFavorite = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isFavorite = favoriteAttractions.contains(widget.attraction);
+  }
+
+  void toggleFavorite() {
+    setState(() {
+      if (isFavorite) {
+        favoriteAttractions.remove(widget.attraction);
+      } else {
+        favoriteAttractions.add(widget.attraction);
+      }
+      isFavorite = !isFavorite;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.of(context).maybePop();
+              },
+              icon: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: Colors.white,
+              ),
+            ),
             expandedHeight: 300.0,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
@@ -35,6 +67,21 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             foregroundColor: Colors.grey[900],
+            actions: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => FavoritesScreen(
+                      favorites: favoriteAttractions,
+                    ),
+                  ));
+                },
+                icon: Icon(
+                  Icons.favorite_rounded,
+                  color: Colors.white,
+                ),
+              ),
+            ],
           ),
           SliverList(
             delegate: SliverChildListDelegate(
@@ -91,7 +138,6 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
                     style: TextStyle(
                       color: Colors.grey[800],
                       fontSize: 16,
-                      height: 2,
                     ),
                   ),
                 ),
@@ -126,19 +172,14 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
         ],
       ),
       bottomNavigationBar: Container(
-        color: primaryColor,
-        padding: EdgeInsets.all(24),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Add to favorites',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
+        color: Colors.transparent,
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        child: ButtonLayout(
+          onTap: toggleFavorite,
+          text: isFavorite ? 'Remove from Favorites' : 'Add to Favorites',
+          buttonColor: darkBlueColor,
+          textColor: Colors.white,
+          buttonIcon: isFavorite ? Icons.favorite : Icons.favorite_border,
         ),
       ),
     );
