@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:wander_wise/components/calendar_banner.dart';
 import 'package:wander_wise/components/custom_appbar.dart';
+import 'package:wander_wise/resources/color.dart';
 
 class CalendarScreen extends StatelessWidget {
   final Map<String, dynamic> predictions;
@@ -46,7 +47,7 @@ class CalendarScreen extends StatelessWidget {
               startingDayOfWeek: StartingDayOfWeek.monday,
               calendarStyle: CalendarStyle(
                 todayDecoration: BoxDecoration(
-                  color: Colors.blue,
+                  color: blueGreyColor,
                   shape: BoxShape.circle,
                 ),
                 selectedDecoration: BoxDecoration(
@@ -103,7 +104,7 @@ class CalendarScreen extends StatelessWidget {
                             '${date.day}',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 15,
+                              fontSize: 14,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
@@ -157,8 +158,8 @@ class _Banner extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.grey,
-          width: 2.0,
+          color: Colors.grey[350]!,
+          width: 4.0,
         ),
         borderRadius: BorderRadius.circular(
           16.0,
@@ -172,25 +173,17 @@ class _Banner extends StatelessWidget {
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Expanded(
                   child: BannerLayout(
-                    boxColor: Colors.red,
-                    priceStatus: 'Very High',
+                    boxColor: Colors.green,
+                    priceStatus: 'Very Low',
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      bottomLeft: Radius.circular(8),
+                    ),
                   ),
                 ),
-                Expanded(
-                  child: BannerLayout(
-                    boxColor: Colors.orange,
-                    priceStatus: 'Slightly High',
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
                 Expanded(
                   child: BannerLayout(
                     boxColor: Color(0xffd4c339),
@@ -199,12 +192,48 @@ class _Banner extends StatelessWidget {
                 ),
                 Expanded(
                   child: BannerLayout(
-                    boxColor: Colors.green,
-                    priceStatus: 'Very Low',
+                    boxColor: Colors.orange,
+                    priceStatus: 'Slightly High',
+                  ),
+                ),
+                Expanded(
+                  child: BannerLayout(
+                    boxColor: Colors.red,
+                    priceStatus: 'Very High',
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(8),
+                      bottomRight: Radius.circular(8),
+                    ),
                   ),
                 ),
               ],
             ),
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 4,
+                right: 4,
+                top: 4,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Good Deal',
+                    style: TextStyle(
+                      color: Colors.grey[800],
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  Text(
+                    'Expensive',
+                    style: TextStyle(
+                      color: Colors.grey[800],
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

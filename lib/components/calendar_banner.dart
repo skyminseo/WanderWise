@@ -3,37 +3,36 @@ import 'package:flutter/material.dart';
 class BannerLayout extends StatelessWidget {
   final Color boxColor;
   final String priceStatus;
+  final BorderRadiusGeometry? borderRadius;
 
   const BannerLayout({
     required this.boxColor,
     required this.priceStatus,
+    this.borderRadius,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: boxColor,
-            shape: BoxShape.circle,
-          ),
-          width: 16.0,
-          height: 16.0,
-        ),
-        SizedBox(
-          width: 16.0,
-        ),
-        Text(
+    return Container(
+      decoration: BoxDecoration(
+        color: boxColor,
+        shape: BoxShape.rectangle,
+        borderRadius: borderRadius,
+      ),
+      child: Center(
+        child: Text(
           priceStatus,
-          style: TextStyle(
-            fontWeight: FontWeight.w600,
-            fontSize: 16.0,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+            fontSize: 12,
           ),
         ),
-      ],
+      ),
+      height: 30,
+      width: 68,
     );
   }
 }
