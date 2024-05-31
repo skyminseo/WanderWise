@@ -20,10 +20,6 @@ class CalendarScreen extends StatelessWidget {
       processedPredictions[date] = value;
     });
 
-    // Check if predictions are processed correctly
-    print(
-        'Processed Predictions: $processedPredictions'); // Debug statement to print the processed predictions
-
     return Scaffold(
       appBar: CustomAppBar(title: 'FLIGHT PRICE CALENDAR'),
       body: Column(
@@ -37,25 +33,26 @@ class CalendarScreen extends StatelessWidget {
               firstDay: DateTime.utc(2010, 10, 16),
               lastDay: DateTime.utc(2030, 3, 14),
               headerStyle: HeaderStyle(
-                  formatButtonVisible: false,
-                  titleCentered: true,
-                  titleTextStyle: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
-                  )),
+                formatButtonVisible: false,
+                titleCentered: true,
+                titleTextStyle: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
               calendarFormat: CalendarFormat.month,
               startingDayOfWeek: StartingDayOfWeek.monday,
               calendarStyle: CalendarStyle(
                 todayDecoration: BoxDecoration(
                   color: blueGreyColor,
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 selectedDecoration: BoxDecoration(
                   color: Colors.orange,
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(8),
                 ),
                 markerDecoration: BoxDecoration(
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(8),
                 ),
               ),
               eventLoader: (day) {
@@ -63,15 +60,12 @@ class CalendarScreen extends StatelessWidget {
                 final events = processedPredictions.containsKey(strippedDay)
                     ? [processedPredictions[strippedDay]]
                     : [];
-                print('Events for $strippedDay: $events'); // Debug statement
                 return events;
               },
               calendarBuilders: CalendarBuilders(
                 markerBuilder: (context, date, events) {
                   if (events.isNotEmpty) {
                     final event = events[0] as Map<String, dynamic>;
-                    print(
-                        'Building marker for $date: $event'); // Debug statement
                     Color markerColor;
                     switch (event['price_level']) {
                       case 'very high':
@@ -90,12 +84,11 @@ class CalendarScreen extends StatelessWidget {
                         markerColor = Colors.grey;
                     }
                     return Positioned(
-                      right: 1,
-                      bottom: 1,
+                      bottom: 6,
                       child: Container(
                         decoration: BoxDecoration(
                           color: markerColor,
-                          shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(12),
                         ),
                         width: 40,
                         height: 40,
@@ -139,7 +132,8 @@ class CalendarScreen extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                      'Price Level: ${prediction?['price_level'] ?? 'N/A'}'),
+                    'Price Level: ${prediction?['price_level'] ?? 'N/A'}',
+                  ),
                 );
               },
             ),

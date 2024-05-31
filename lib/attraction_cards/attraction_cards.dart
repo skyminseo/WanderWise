@@ -62,7 +62,7 @@ class AttractionCards extends StatelessWidget {
                         Row(
                           children: [
                             Icon(
-                              Icons.star,
+                              Icons.star_rounded,
                               color: Colors.yellow[800],
                             ),
                             Text(

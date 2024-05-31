@@ -104,15 +104,26 @@ class _WelcomeText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 16),
-      child: Center(
-        child: Text(
-          'Hello, ' + user.email!.split('@')[0]! + '!',
-          style: GoogleFonts.notoSans(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(12)
+      ),
+      padding: EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 8,
+      ),
+      margin: EdgeInsets.only(
+        left: 16,
+        top: 8,
+      ),
+      child: Text(
+        textAlign: TextAlign.left,
+        'Hello, ' + user.email!.split('@')[0]! + '!' + ' 👋',
+        style: GoogleFonts.notoSans(
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: Colors.grey[800],
         ),
       ),
     );
@@ -131,6 +142,7 @@ class _FeatureTitle extends StatelessWidget {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w700,
+          color: Colors.grey[800],
         ),
       ),
     );
@@ -149,6 +161,7 @@ class _PopularTitle extends StatelessWidget {
         style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w700,
+          color: Colors.grey[800],
         ),
       ),
     );

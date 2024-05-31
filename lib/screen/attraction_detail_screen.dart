@@ -77,7 +77,7 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
                   child: Text(
                     "Description",
                     style: TextStyle(
-                      color: Colors.grey[900],
+                      color: Colors.grey[800],
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
@@ -101,7 +101,7 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
                   child: Text(
                     "Average Ticket Price",
                     style: TextStyle(
-                      color: Colors.grey[900],
+                      color: Colors.grey[800],
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                       height: 2,

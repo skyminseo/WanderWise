@@ -87,7 +87,7 @@ class _StartScreenState extends State<StartScreen> {
           ),
           ClipRRect(
             child: SizedBox(
-              height: 480,
+              height: 500,
               child: PageView(
                 controller: controller,
                 children: const [

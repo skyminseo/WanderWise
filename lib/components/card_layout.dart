@@ -32,8 +32,8 @@ class CardLayout extends StatelessWidget {
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(48),
                 topRight: Radius.circular(48),
-                bottomLeft: Radius.circular(32),
-                bottomRight: Radius.circular(32),
+                bottomLeft: Radius.circular(28),
+                bottomRight: Radius.circular(28),
               ),
               child: Container(
                 color: blueColor,
@@ -46,7 +46,14 @@ class CardLayout extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.white,
               ),
-              padding: EdgeInsets.all(16),
+              width: 500,
+              height: 70,
+              padding: EdgeInsets.only(
+                left: 16,
+                right: 16,
+                top: 8,
+                bottom: 8,
+              ),
               margin: EdgeInsets.only(
                 top: 16,
                 left: 4,
@@ -57,7 +64,7 @@ class CardLayout extends StatelessWidget {
                   content,
                   style: TextStyle(
                     color: Colors.blueGrey,
-                    fontSize: 12.0,
+                    fontSize: 15.0,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
