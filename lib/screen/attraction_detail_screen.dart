@@ -3,11 +3,10 @@ import 'package:wander_wise/attraction_cards/attractions.dart';
 import 'package:wander_wise/components/button_layout.dart';
 import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/screen/favorites_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wander_wise/providers/favorites_provider.dart';
 
-// Global list to store favorites
-List<Attractions> favoriteAttractions = [];
-
-class AttractionDetailScreen extends StatefulWidget {
+class AttractionDetailScreen extends ConsumerStatefulWidget {
   final Attractions attraction;
   final int index;
 
@@ -18,24 +17,24 @@ class AttractionDetailScreen extends StatefulWidget {
   });
 
   @override
-  State<AttractionDetailScreen> createState() => _AttractionDetailScreenState();
+  _AttractionDetailScreenState createState() => _AttractionDetailScreenState();
 }
 
-class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
+class _AttractionDetailScreenState extends ConsumerState<AttractionDetailScreen> {
   bool isFavorite = false;
 
   @override
   void initState() {
     super.initState();
-    isFavorite = favoriteAttractions.contains(widget.attraction);
+    isFavorite = ref.read(favoritesProvider).contains(widget.attraction);
   }
 
   void toggleFavorite() {
     setState(() {
       if (isFavorite) {
-        favoriteAttractions.remove(widget.attraction);
+        ref.read(favoritesProvider.notifier).removeFavorite(widget.attraction);
       } else {
-        favoriteAttractions.add(widget.attraction);
+        ref.read(favoritesProvider.notifier).addFavorite(widget.attraction);
       }
       isFavorite = !isFavorite;
     });
@@ -71,9 +70,7 @@ class _AttractionDetailScreenState extends State<AttractionDetailScreen> {
               IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => FavoritesScreen(
-                      favorites: favoriteAttractions,
-                    ),
+                    builder: (context) => FavoritesScreen(),
                   ));
                 },
                 icon: Icon(

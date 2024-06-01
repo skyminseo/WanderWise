@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wander_wise/components/list_tile_layout.dart';
 import 'package:wander_wise/resources/color.dart';
+import 'package:wander_wise/screen/favorites_screen.dart';
 import 'package:wander_wise/screen/my_page_screen.dart';
 import 'package:wander_wise/screen/saved_ticket_screen.dart';
 
@@ -50,6 +51,17 @@ class HomeDrawer extends StatelessWidget {
                       builder: (context) => SavedTicketScreen(),
                     ),
                   );
+                },
+              ),
+
+              /// favorites list tile
+              ListTileLayout(
+                icon: Icons.favorite,
+                text: 'F A V O R I T E S',
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => FavoritesScreen(),
+                  ));
                 },
               ),
             ],
