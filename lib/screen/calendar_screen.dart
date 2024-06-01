@@ -3,13 +3,15 @@ import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:wander_wise/components/calendar_banner.dart';
 import 'package:wander_wise/resources/color.dart';
+import 'saved_ticket_screen.dart';
 
-class CalendarScreen extends StatelessWidget {
+class CalendarScreen extends StatefulWidget {
   final Map<String, dynamic> predictions;
   final DateTime focusedDay;
   final String departureCity;
   final String destinationCity;
   final DateTime departureDate; // Added departure date
+  final int selectedNumberOfChanges;
 
   CalendarScreen({
     required this.predictions,
@@ -17,159 +19,229 @@ class CalendarScreen extends StatelessWidget {
     required this.departureCity,
     required this.destinationCity,
     required this.departureDate, // Added departure date
+    required this.selectedNumberOfChanges,
   });
+
+  @override
+  _CalendarScreenState createState() => _CalendarScreenState();
+}
+
+class _CalendarScreenState extends State<CalendarScreen> {
+  List<DateTime> selectedPreferredDates = [];
+
+  Map<String, List<DateTime>> groupedDatesByMonth(
+      Map<DateTime, Map<String, dynamic>> predictions) {
+    Map<String, List<DateTime>> groupedDates = {};
+
+    predictions.forEach((date, value) {
+      String monthKey = DateFormat("MMMM y").format(date);
+      if (!groupedDates.containsKey(monthKey)) {
+        groupedDates[monthKey] = [];
+      }
+      groupedDates[monthKey]!.add(date);
+    });
+
+    return groupedDates;
+  }
 
   @override
   Widget build(BuildContext context) {
     // Process the predictions to map them to the correct date format
     Map<DateTime, Map<String, dynamic>> processedPredictions = {};
-    predictions.forEach((key, value) {
+    widget.predictions.forEach((key, value) {
       // Parse the date string and create a DateTime object
       DateTime date = DateTime.parse(key).toUtc();
       processedPredictions[date] = value;
     });
 
-    // Filter the processed predictions to include only those with a "very low" price level
-    Map<DateTime, Map<String, dynamic>> veryLowPricePredictions = {};
+    // Filter the processed predictions to include those with a "very low" or "slightly low" price level
+    Map<DateTime, Map<String, dynamic>> recommendedPricePredictions = {};
     processedPredictions.forEach((key, value) {
-      if (value['price_level'] == 'very low') {
-        veryLowPricePredictions[key] = value;
+      if (value['price_level'] == 'very low' ||
+          value['price_level'] == 'slightly low') {
+        recommendedPricePredictions[key] = value;
       }
     });
+
+    // Group the dates by month
+    Map<String, List<DateTime>> groupedDates =
+        groupedDatesByMonth(recommendedPricePredictions);
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            foregroundColor: darkBlueColor,
             leading: IconButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
               icon: Icon(
                 Icons.arrow_back_ios_new_rounded,
-                color: Colors.white,
               ),
             ),
             title: Row(
               children: [
                 Text(
-                  '$departureCity ',
+                  '${widget.departureCity} ',
                   style: TextStyle(
-                    color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                Icon(Icons.airplanemode_active_rounded),
+                Icon(
+                  Icons.airplanemode_active_rounded,
+                ),
                 Text(
-                  ' $destinationCity',
+                  ' ${widget.destinationCity}',
                   style: TextStyle(
-                    color: Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
               ],
             ),
-            expandedHeight: 140.0,
+            actions: [
+              IconButton(
+                icon: Icon(
+                  Icons.airplane_ticket_rounded,
+                  size: 32,
+                ),
+                onPressed: () {
+                  if (selectedPreferredDates.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SavedTicketScreen(
+                          selectedDates: selectedPreferredDates,
+                          departureCity: widget.departureCity,
+                          destinationCity: widget.destinationCity,
+                          selectedNumberOfChanges:
+                              widget.selectedNumberOfChanges,
+                        ),
+                      ),
+                    );
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text('Please select at least one date'),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+            expandedHeight: 180.0,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              background: _AppbarText(
-                departureCity: departureCity,
-                destinationCity: destinationCity,
-                departureDate: departureDate, // Pass departure date
+              background: Container(
+                decoration: BoxDecoration(
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(36),
+                    bottomRight: Radius.circular(36),
+                  ),
+                  child: _AppbarText(
+                    departureCity: widget.departureCity,
+                    destinationCity: widget.destinationCity,
+                    departureDate: widget.departureDate, // Pass departure date
+                  ),
+                ),
               ),
             ),
-            backgroundColor: darkBlueColor,
+            backgroundColor: Colors.grey[50],
             elevation: 0,
           ),
           SliverToBoxAdapter(
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(36),
-                topRight: Radius.circular(36),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: TableCalendar(
-                  focusedDay: focusedDay,
-                  firstDay: DateTime.utc(2010, 10, 16),
-                  lastDay: DateTime.utc(2030, 3, 14),
-                  headerStyle: HeaderStyle(
-                    formatButtonVisible: false,
-                    titleCentered: true,
-                    titleTextStyle: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w700,
-                    ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: TableCalendar(
+                focusedDay: widget.focusedDay,
+                firstDay: DateTime.utc(2010, 10, 16),
+                lastDay: DateTime.utc(2030, 3, 14),
+                headerStyle: HeaderStyle(
+                  formatButtonVisible: false,
+                  titleCentered: true,
+                  titleTextStyle: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w700,
                   ),
-                  calendarFormat: CalendarFormat.month,
-                  startingDayOfWeek: StartingDayOfWeek.monday,
-                  calendarStyle: CalendarStyle(
-                    todayDecoration: BoxDecoration(
-                      color: blueGreyColor,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    selectedDecoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    markerDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                ),
+                calendarFormat: CalendarFormat.month,
+                startingDayOfWeek: StartingDayOfWeek.monday,
+                calendarStyle: CalendarStyle(
+                  todayDecoration: BoxDecoration(
+                    color: blueGreyColor,
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  eventLoader: (day) {
-                    final strippedDay =
-                        DateTime.utc(day.year, day.month, day.day);
-                    final events = processedPredictions.containsKey(strippedDay)
-                        ? [processedPredictions[strippedDay]]
-                        : [];
-                    return events;
-                  },
-                  calendarBuilders: CalendarBuilders(
-                    markerBuilder: (context, date, events) {
-                      if (events.isNotEmpty) {
-                        final event = events[0] as Map<String, dynamic>;
-                        Color markerColor;
-                        switch (event['price_level']) {
-                          case 'very high':
-                            markerColor = Colors.red;
-                            break;
-                          case 'slightly high':
-                            markerColor = Colors.orange;
-                            break;
-                          case 'slightly low':
-                            markerColor = Color(0xffd4cf39);
-                            break;
-                          case 'very low':
-                            markerColor = Colors.green;
-                            break;
-                          default:
-                            markerColor = Colors.grey;
-                        }
-                        return Positioned(
-                          bottom: 6,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: markerColor,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            width: 40,
-                            height: 40,
-                            child: Center(
-                              child: Text(
-                                '${date.day}',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                  selectedDecoration: BoxDecoration(
+                    color: Colors.orange,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  markerDecoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                eventLoader: (day) {
+                  final strippedDay =
+                      DateTime.utc(day.year, day.month, day.day);
+                  final events = processedPredictions.containsKey(strippedDay)
+                      ? [processedPredictions[strippedDay]]
+                      : [];
+                  return events;
+                },
+                calendarBuilders: CalendarBuilders(
+                  markerBuilder: (context, date, events) {
+                    if (events.isNotEmpty) {
+                      final event = events[0] as Map<String, dynamic>;
+                      Color markerColor;
+                      switch (event['price_level']) {
+                        case 'very high':
+                          markerColor = Colors.red;
+                          break;
+                        case 'slightly high':
+                          markerColor = Colors.orange;
+                          break;
+                        case 'slightly low':
+                          markerColor = Color(0xffd4cf39);
+                          break;
+                        case 'very low':
+                          markerColor = Colors.green;
+                          break;
+                        default:
+                          markerColor = Colors.grey;
+                      }
+                      return Positioned(
+                        bottom: 6,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: markerColor,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          width: 40,
+                          height: 40,
+                          child: Center(
+                            child: Text(
+                              '${date.day}',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
                               ),
                             ),
                           ),
-                        );
-                      }
-                      return null;
-                    },
-                  ),
+                        ),
+                      );
+                    }
+                    return null;
+                  },
                 ),
               ),
             ),
@@ -182,25 +254,94 @@ class CalendarScreen extends StatelessWidget {
             ),
           ),
           SliverToBoxAdapter(
-            child: Column(
-              children: veryLowPricePredictions.entries.map((entry) {
-                final date = entry.key;
-                final prediction = entry.value;
-                return ListTile(
-                  title: Text(
-                    '${date.year}. ${date.month}. ${date.day}',
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  subtitle: Text(
-                    'Price Level: ${prediction['price_level']}',
-                  ),
-                );
-              }).toList(),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical: 8.0,
+                horizontal: 20,
+              ),
+              child: Text(
+                'I recommend buying tickets on these dates!',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ),
+          ...groupedDates.entries.map((entry) {
+            final month = entry.key;
+            final dates = entry.value;
+            return SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16.0,
+                      right: 20,
+                      top: 20,
+                    ),
+                    child: Text(
+                      month,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 100, // Set a fixed height for the horizontal list
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: dates.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final date = dates[index];
+                        final prediction = recommendedPricePredictions[date];
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              if (selectedPreferredDates.contains(date)) {
+                                selectedPreferredDates.remove(date);
+                              } else {
+                                selectedPreferredDates.add(date);
+                              }
+                            });
+                          },
+                          child: Container(
+                            width: 180, // Set a fixed width for each item
+                            margin: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Card(
+                              elevation: 4,
+                              child: ListTile(
+                                title: Text(
+                                  '${date.year}. ${date.month}. ${date.day}',
+                                  style: TextStyle(
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                subtitle: Text(
+                                  'Ticket Price: ${prediction!['price_level']}',
+                                ),
+                                trailing: Icon(
+                                  selectedPreferredDates.contains(date)
+                                      ? Icons.check_circle
+                                      : Icons.radio_button_unchecked,
+                                  color: selectedPreferredDates.contains(date)
+                                      ? Colors.green
+                                      : Colors.grey,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
         ],
       ),
     );
@@ -331,11 +472,10 @@ class _AppbarText extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: darkPrimaryColor,
+        color: primaryColor,
       ),
-      padding: EdgeInsets.symmetric(
-        horizontal: 32,
-        vertical: 20,
+      padding: EdgeInsets.only(
+        bottom: 20,
       ),
       child: Row(
         children: [
@@ -343,20 +483,87 @@ class _AppbarText extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text(
-                  '$departureCity to $destinationCity',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 40,
+                    right: 40,
+                  ),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          spreadRadius: 4,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    padding: EdgeInsets.only(
+                      top: 8,
+                      bottom: 8,
+                    ),
+                    margin: EdgeInsets.only(
+                      left: 60,
+                      right: 60,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.flight_takeoff_rounded,
+                                size: 28,
+                                color: Colors.grey[800],
+                              ),
+                              SizedBox(width: 16),
+                              Text(
+                                '$departureCity',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.grey[800]),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.flight_land_rounded,
+                                size: 28,
+                                color: Colors.grey[800],
+                              ),
+                              SizedBox(width: 20),
+                              Text(
+                                '$destinationCity',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.grey[800],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+                SizedBox(height: 16),
                 Text(
                   '$firstFormattedDate - $lastFormattedDate',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white,
+                    color: Colors.grey[800],
                   ),
                 ),
               ],

@@ -86,6 +86,7 @@ class _PredictorScreenState extends State<PredictorScreen> {
               departureCity: selectedSourceCity,
               destinationCity: selectedDestinationCity,
               departureDate: selectedDepartureDate,
+              selectedNumberOfChanges: selectedNumberOfChanges,
             ),
           ),
         );
