@@ -17,13 +17,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: AppBar(
-        backgroundColor: primaryColor,
+        backgroundColor: blueGreyColor,
         centerTitle: true,
         title: Text(
           title,
           style: TextStyle(
             fontSize: 22.0,
             fontWeight: FontWeight.w600,
+            color: darkBlueColor,
           ),
         ),
         automaticallyImplyLeading: automaticallyImplyLeading,

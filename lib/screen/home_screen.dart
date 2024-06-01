@@ -176,7 +176,7 @@ class _WelcomeText extends StatelessWidget {
                     Text(
                       user.email!.split('@')[0]! + '!' + ' 👋',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 24,
                         fontWeight: FontWeight.w600,
                         color: blueColor,
                       ),

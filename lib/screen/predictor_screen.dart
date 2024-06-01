@@ -8,6 +8,7 @@ import 'package:wander_wise/components/searchable_dropdown.dart';
 import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/resources/destination_cities.dart';
 import 'package:wander_wise/resources/source_cities.dart';
+import 'package:wander_wise/resources/city_names.dart'; // Import the city names map
 import 'calendar_screen.dart';
 
 class PredictorScreen extends StatefulWidget {
@@ -82,6 +83,9 @@ class _PredictorScreenState extends State<PredictorScreen> {
               predictions: predictions,
               focusedDay: DateTime.parse(
                   predictionList.first['date']), // set focusedDay
+              departureCity: selectedSourceCity,
+              destinationCity: selectedDestinationCity,
+              departureDate: selectedDepartureDate,
             ),
           ),
         );
@@ -100,6 +104,10 @@ class _PredictorScreenState extends State<PredictorScreen> {
   }
 
   void _showDatePicker(BuildContext context) {
+    final DateTime now = DateTime.now();
+    final DateTime initialDate =
+        now.isAfter(selectedDepartureDate) ? now : selectedDepartureDate;
+
     showCupertinoModalPopup(
       context: context,
       builder: (_) => Container(
@@ -110,7 +118,8 @@ class _PredictorScreenState extends State<PredictorScreen> {
             Expanded(
               child: Container(
                 child: CupertinoDatePicker(
-                  initialDateTime: selectedDepartureDate,
+                  minimumDate: now, // Set the minimum date to the current date
+                  initialDateTime: initialDate,
                   mode: CupertinoDatePickerMode.date,
                   onDateTimeChanged: (DateTime newDateTime) {
                     setState(() {
@@ -195,11 +204,16 @@ class _PredictorScreenState extends State<PredictorScreen> {
                           Flexible(
                             child: SearchableDropdown<String>(
                               labelText: 'Source City',
-                              selectedValue: selectedSourceCity,
-                              items: sourceCities,
+                              selectedValue: cityNames[selectedSourceCity]!,
+                              items: sourceCities
+                                  .map((cityCode) => cityNames[cityCode]!)
+                                  .toList(),
                               onChanged: (String? newValue) {
                                 setState(() {
-                                  selectedSourceCity = newValue!;
+                                  selectedSourceCity = cityNames.entries
+                                      .firstWhere(
+                                          (entry) => entry.value == newValue)
+                                      .key;
                                 });
                               },
                               boxColor: darkPrimaryColor,
@@ -209,11 +223,17 @@ class _PredictorScreenState extends State<PredictorScreen> {
                           Flexible(
                             child: SearchableDropdown<String>(
                               labelText: 'Destination City',
-                              selectedValue: selectedDestinationCity,
-                              items: destinationCities,
+                              selectedValue:
+                                  cityNames[selectedDestinationCity]!,
+                              items: destinationCities
+                                  .map((cityCode) => cityNames[cityCode]!)
+                                  .toList(),
                               onChanged: (String? newValue) {
                                 setState(() {
-                                  selectedDestinationCity = newValue!;
+                                  selectedDestinationCity = cityNames.entries
+                                      .firstWhere(
+                                          (entry) => entry.value == newValue)
+                                      .key;
                                 });
                               },
                               boxColor: darkPrimaryColor,
@@ -349,7 +369,7 @@ class _PredictorScreenState extends State<PredictorScreen> {
                     ButtonLayout(
                       onTap: fetchPredictions,
                       text: 'Get Predictions!',
-                      buttonColor: blueGreyColor,
+                      buttonColor: primaryColor,
                       textColor: Colors.grey[800]!,
                       buttonIcon: Icons.arrow_forward_ios_rounded,
                       border: Border.all(
