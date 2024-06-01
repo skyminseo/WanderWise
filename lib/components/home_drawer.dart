@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wander_wise/components/list_tile_layout.dart';
 import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/screen/my_page_screen.dart';
+import 'package:wander_wise/screen/saved_ticket_screen.dart';
 
 class HomeDrawer extends StatelessWidget {
   final void Function()? onProfileTap;
@@ -37,6 +38,20 @@ class HomeDrawer extends StatelessWidget {
                   icon: Icons.account_circle,
                   text: 'P R O F I L E',
                   onTap: onProfileTap),
+
+              /// saved ticket list tile
+              ListTileLayout(
+                icon: Icons.airplane_ticket,
+                text: 'S A V E D  T I C K E T S',
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SavedTicketScreen(),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
 

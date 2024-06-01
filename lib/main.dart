@@ -9,6 +9,7 @@ import 'package:wander_wise/screen/start_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,20 +17,22 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        textTheme: TextTheme(
-          bodyMedium: GoogleFonts.notoSans(),
+    ProviderScope(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          textTheme: TextTheme(
+            bodyMedium: GoogleFonts.notoSans(),
+          ),
         ),
+        home: StartScreen(),
+        routes: {
+          '/home': (context) => HomeScreen(),
+          '/start': (context) => StartScreen(),
+          '/community': (context) => CommunityScreen(),
+          '/mypage': (context) => MyPageScreen(),
+        },
       ),
-      home: StartScreen(),
-      routes: {
-        '/home': (context) => HomeScreen(),
-        '/start': (context) => StartScreen(),
-        '/community': (context) => CommunityScreen(),
-        '/mypage': (context) => MyPageScreen(),
-      },
     ),
   );
 }

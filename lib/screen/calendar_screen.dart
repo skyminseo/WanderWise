@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wander_wise/components/calendar_banner.dart';
 import 'package:wander_wise/resources/color.dart';
 import 'saved_ticket_screen.dart';
+import 'package:wander_wise/providers/saved_tickets_provider.dart';
 
-class CalendarScreen extends StatefulWidget {
+class CalendarScreen extends ConsumerStatefulWidget {
   final Map<String, dynamic> predictions;
   final DateTime focusedDay;
   final String departureCity;
@@ -26,7 +28,7 @@ class CalendarScreen extends StatefulWidget {
   _CalendarScreenState createState() => _CalendarScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen> {
+class _CalendarScreenState extends ConsumerState<CalendarScreen> {
   List<DateTime> selectedPreferredDates = [];
 
   Map<String, List<DateTime>> groupedDatesByMonth(
@@ -65,7 +67,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
 
     // Group the dates by month
     Map<String, List<DateTime>> groupedDates =
-        groupedDatesByMonth(recommendedPricePredictions);
+    groupedDatesByMonth(recommendedPricePredictions);
 
     return Scaffold(
       body: CustomScrollView(
@@ -107,16 +109,20 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
                 onPressed: () {
                   if (selectedPreferredDates.isNotEmpty) {
+                    ref.read(savedTicketsProvider.notifier).loadTickets(
+                      selectedPreferredDates.map((date) {
+                        return Ticket(
+                          date: date,
+                          departureCity: widget.departureCity,
+                          destinationCity: widget.destinationCity,
+                          numberOfChanges: widget.selectedNumberOfChanges,
+                        );
+                      }).toList(),
+                    );
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SavedTicketScreen(
-                          selectedDates: selectedPreferredDates,
-                          departureCity: widget.departureCity,
-                          destinationCity: widget.destinationCity,
-                          selectedNumberOfChanges:
-                              widget.selectedNumberOfChanges,
-                        ),
+                        builder: (context) => SavedTicketScreen(),
                       ),
                     );
                   } else {
@@ -191,7 +197,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 ),
                 eventLoader: (day) {
                   final strippedDay =
-                      DateTime.utc(day.year, day.month, day.day);
+                  DateTime.utc(day.year, day.month, day.day);
                   final events = processedPredictions.containsKey(strippedDay)
                       ? [processedPredictions[strippedDay]]
                       : [];
@@ -249,7 +255,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
           SliverToBoxAdapter(
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+              const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               child: _Banner(),
             ),
           ),
@@ -467,7 +473,7 @@ class _AppbarText extends StatelessWidget {
 
     // Format the new departure date to "July 17"
     String firstFormattedDate =
-        DateFormat("yMMMMd").format(selectedDepartureDate);
+    DateFormat("yMMMMd").format(selectedDepartureDate);
     String lastFormattedDate = DateFormat("yMMMMd").format(lastPredictedDate);
 
     return Container(

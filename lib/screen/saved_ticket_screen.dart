@@ -1,53 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:wander_wise/components/button_layout.dart';
+import 'package:wander_wise/providers/saved_tickets_provider.dart';
 import 'package:wander_wise/resources/color.dart';
+import 'package:wander_wise/screen/home_screen.dart';
 import 'package:wander_wise/screen/predictor_screen.dart';
 
-class SavedTicketScreen extends StatefulWidget {
-  final List<DateTime> selectedDates;
-  final String departureCity;
-  final String destinationCity;
-  final int selectedNumberOfChanges;
-
-  SavedTicketScreen({
-    required this.selectedDates,
-    required this.departureCity,
-    required this.destinationCity,
-    required this.selectedNumberOfChanges,
-  });
-
+class SavedTicketScreen extends ConsumerWidget {
   @override
-  _SavedTicketScreenState createState() => _SavedTicketScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final savedTickets = ref.watch(savedTicketsProvider);
+    final savedTicketsNotifier = ref.watch(savedTicketsProvider.notifier);
 
-class _SavedTicketScreenState extends State<SavedTicketScreen> {
-  late List<DateTime> selectedDates;
-
-  @override
-  void initState() {
-    super.initState();
-    selectedDates = widget.selectedDates;
-  }
-
-  void deleteTicket(int index) {
-    setState(() {
-      selectedDates.removeAt(index);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         leading: IconButton(
-          onPressed: (){
+          onPressed: () {
             Navigator.of(context).maybePop();
           },
           icon: Icon(Icons.arrow_back_ios_new_rounded),
         ),
         title: Text('Saved Tickets'),
+        actions: [
+          IconButton(
+            onPressed: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => HomeScreen()),
+              );
+            },
+            icon: Icon(
+              Icons.home,
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -68,15 +55,15 @@ class _SavedTicketScreenState extends State<SavedTicketScreen> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: ListView.builder(
-                itemCount: selectedDates.length,
+                itemCount: savedTickets.length,
                 itemBuilder: (context, index) {
                   String formattedDate =
-                      DateFormat("yMMMMd").format(selectedDates[index]);
+                      DateFormat("yMMMMd").format(savedTickets[index].date);
                   return Card(
                     elevation: 4,
                     child: ListTile(
                       title: Text(
-                        '${widget.departureCity} to ${widget.destinationCity}',
+                        '${savedTickets[index].departureCity} to ${savedTickets[index].destinationCity}',
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.w500,
@@ -84,11 +71,12 @@ class _SavedTicketScreenState extends State<SavedTicketScreen> {
                       ),
                       subtitle: Text(
                         'Departure Date: $formattedDate\n'
-                        'Number of Changes: ${widget.selectedNumberOfChanges}',
+                        'Number of Changes: ${savedTickets[index].numberOfChanges}',
                       ),
                       trailing: IconButton(
                         icon: Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => deleteTicket(index),
+                        onPressed: () => savedTicketsNotifier
+                            .removeTicket(savedTickets[index]),
                       ),
                     ),
                   );
