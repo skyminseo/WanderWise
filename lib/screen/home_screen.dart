@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: 30),
                       _PlacesToVisit(),
                       _Attractions(),
-                      _MustTryDishes(),
+                      _MustTryFoods(),
                       _Foods(),  // Add this widget
                     ],
                   ),
@@ -270,15 +270,15 @@ class _PlacesToVisit extends StatelessWidget {
   }
 }
 
-class _MustTryDishes extends StatelessWidget {
-  const _MustTryDishes({super.key});
+class _MustTryFoods extends StatelessWidget {
+  const _MustTryFoods({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left: 24, bottom: 12),
       child: Text(
-        'Must-Try Dishes',
+        'Must-Try Foods',
         style: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.w800,

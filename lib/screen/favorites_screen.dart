@@ -55,7 +55,13 @@ class FavoritesScreen extends ConsumerWidget {
               vertical: 12,
             ),
             child: ListTile(
-              leading: Image.asset(attraction.imagePath, fit: BoxFit.cover),
+              leading: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  attraction.imagePath,
+                  fit: BoxFit.cover,
+                ),
+              ),
               title: Text(
                 attraction.name,
                 style: TextStyle(

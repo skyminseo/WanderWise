@@ -44,7 +44,7 @@ class _PredictorScreenState extends State<PredictorScreen> {
       builder: (BuildContext context) {
         return Center(
           child: CircularProgressIndicator(
-            backgroundColor: Colors.blueGrey,
+            backgroundColor: Colors.white,
             color: primaryColor,
             strokeWidth: 8.0,
           ),

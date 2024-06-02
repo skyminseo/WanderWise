@@ -38,19 +38,7 @@ class SavedTicketScreen extends ConsumerWidget {
       ),
       body: Column(
         children: [
-          ButtonLayout(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => PredictorScreen(),
-                ),
-              );
-            },
-            text: 'Predict other flights!',
-            buttonColor: darkBlueColor,
-            textColor: Colors.white,
-            buttonIcon: Icons.airplane_ticket_rounded,
-          ),
+          SizedBox(height: 16),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -84,6 +72,45 @@ class SavedTicketScreen extends ConsumerWidget {
               ),
             ),
           ),
+          BottomAppBar(
+            height: 180,
+            child: Container(
+              margin: EdgeInsets.symmetric(
+                vertical: 8,
+              ),
+              child: Column(
+                children: [
+                  ButtonLayout(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => PredictorScreen(),
+                        ),
+                      );
+                    },
+                    text: 'Predict other flights!',
+                    buttonColor: darkBlueColor,
+                    textColor: Colors.white,
+                    buttonIcon: Icons.airplane_ticket_rounded,
+                  ),
+                  SizedBox(height: 8),
+                  ButtonLayout(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => PredictorScreen(),
+                        ),
+                      );
+                    },
+                    text: 'Check Destination Weather!',
+                    buttonColor: Colors.teal,
+                    textColor: Colors.white,
+                    buttonIcon: Icons.sunny_snowing,
+                  ),
+                ],
+              ),
+            ),
+          )
         ],
       ),
     );
