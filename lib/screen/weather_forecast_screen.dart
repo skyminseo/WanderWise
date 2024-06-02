@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:intl/intl.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:wander_wise/providers/weather_provider.dart';
+import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/resources/weather_cities.dart';
 
 class WeatherForecastScreen extends ConsumerStatefulWidget {
@@ -13,6 +14,7 @@ class WeatherForecastScreen extends ConsumerStatefulWidget {
 
 class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
   String _city = 'Singapore'; // Default city
+  TextEditingController _cityController = TextEditingController();
 
   void _searchWeather(String city) {
     setState(() {
@@ -60,14 +62,60 @@ class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            DropdownButton2(
-              isExpanded: true,
-              hint: Text(
-                'Select City',
-                style: TextStyle(fontSize: 14),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: TextField(
+                controller: _cityController,
+                decoration: InputDecoration(
+                  labelText: 'Search City',
+                  labelStyle: TextStyle(
+                    color: darkBlueColor,
+                  ),
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: darkBlueColor, // Change this color to your desired focus color
+                      width: 2.0,
+                    ),
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(Icons.search),
+                    onPressed: () {
+                      _searchWeather(_cityController.text);
+                    },
+                  ),
+                ),
+                onSubmitted: (value) {
+                  _searchWeather(value);
+                },
               ),
-              items: weatherCityNames
-                  .map((item) => DropdownMenuItem<String>(
+            ),
+            SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 2,
+                          blurRadius: 2,
+                        ),
+                      ],
+                    ),
+                    child: DropdownButton2(
+                      isExpanded: false,
+                      hint: Text(
+                        'Select City',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                      items: weatherCityNames
+                          .map((item) => DropdownMenuItem<String>(
                         value: item,
                         child: Text(
                           item,
@@ -76,12 +124,16 @@ class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
                           ),
                         ),
                       ))
-                  .toList(),
-              onChanged: (value) {
-                _searchWeather(value as String);
-              },
+                          .toList(),
+                      onChanged: (value) {
+                        _searchWeather(value as String);
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
-            SizedBox(height: 28),
+            SizedBox(height: 32),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -107,45 +159,49 @@ class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
                           horizontal: 8,
                           vertical: 4,
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        child: Column(
                           children: [
-                            Column(
-                              children: [
-                                Text(
-                                  '${weather.cityName}',
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                Lottie.asset(
-                                  getAnimationForCondition(
-                                      weather.mainCondition),
-                                  height: 160,
-                                  width: 160,
-                                ),
-                                Text(
-                                  '${weather.mainCondition}',
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                                Text(
-                                  '${weather.description}',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
+                            Text(
+                              '${weather.cityName}',
+                              style: TextStyle(fontSize: 20),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Text(
-                                  '${weather.currentTemperature.toStringAsFixed(1)} °C',
-                                  style: TextStyle(fontSize: 20),
+                                Column(
+                                  children: [
+                                    Lottie.asset(
+                                      getAnimationForCondition(
+                                          weather.mainCondition),
+                                      height: 160,
+                                      width: 160,
+                                    ),
+                                    Text(
+                                      '${weather.mainCondition}',
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                    Text(
+                                      '${weather.description}',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  'Min Temperature: \n${weather.minTemperature.toStringAsFixed(1)} °C',
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                                Text(
-                                  'Max Temperature: \n${weather.maxTemperature.toStringAsFixed(1)} °C',
-                                  style: TextStyle(fontSize: 12),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '${weather.currentTemperature.toStringAsFixed(1)} °C',
+                                      style: TextStyle(fontSize: 20),
+                                    ),
+                                    Text(
+                                      'Min Temperature: \n${weather.minTemperature.toStringAsFixed(1)} °C',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                    Text(
+                                      'Max Temperature: \n${weather.maxTemperature.toStringAsFixed(1)} °C',
+                                      style: TextStyle(fontSize: 12),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
@@ -157,11 +213,11 @@ class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
                       ),
                       error: (error, stack) => Text('Error: $error'),
                     ),
-                    SizedBox(height: 40),
+                    SizedBox(height: 20),
                     Text(
                       'Forecast',
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 16),
                     forecastAsyncValue.when(
@@ -234,7 +290,9 @@ class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
                           ),
                         );
                       },
-                      loading: () => CircularProgressIndicator(),
+                      loading: () => Center(
+                        child: CircularProgressIndicator(),
+                      ),
                       error: (error, stack) => Text('Error: $error'),
                     ),
                   ],
