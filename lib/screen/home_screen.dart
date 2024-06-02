@@ -15,6 +15,8 @@ import 'package:wander_wise/screen/predictor_screen.dart';
 import 'package:wander_wise/screen/start_screen.dart';
 import 'package:wander_wise/screen/community_screen.dart';
 import 'package:wander_wise/screen/weather_forecast_screen.dart';
+import 'package:wander_wise/screen/currency_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -105,8 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   topRight: Radius.circular(36),
                 ),
                 child: Container(
-                  color: Colors
-                      .grey[50], // Ensure the color matches the background
+                  color: Colors.grey[50], // Ensure the color matches the background
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -117,6 +118,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       _CommunityButton(),
                       SizedBox(height: 10),
                       _WeatherButton(), // Add Weather button
+                      SizedBox(height: 10),
+                      _CurrencyButton(), // Add Currency Button
                       SizedBox(height: 30),
                       _PlacesToVisit(),
                       _Attractions(),
@@ -360,6 +363,27 @@ class _WeatherButton extends StatelessWidget {
   }
 }
 
+class _CurrencyButton extends StatelessWidget {
+  const _CurrencyButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ButtonLayout(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => CurrencyScreen(),
+          ),
+        );
+      },
+      text: 'Check Currency Rates',
+      buttonColor: Colors.green[400]!,
+      textColor: Colors.white,
+      buttonIcon: Icons.attach_money,
+    );
+  }
+}
+
 class _Attractions extends StatefulWidget {
   const _Attractions({super.key});
 
@@ -390,8 +414,7 @@ class _AttractionsState extends State<_Attractions> {
         scrollDirection: Axis.horizontal,
         itemCount: attractions.length,
         itemBuilder: (context, index) => GestureDetector(
-          onTap: () =>
-              navigateToAttractionDetails(index), // Navigate with index
+          onTap: () => navigateToAttractionDetails(index), // Navigate with index
           child: AttractionCards(
             attraction: attractionMenu[index],
           ),

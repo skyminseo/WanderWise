@@ -35,9 +35,9 @@ class WeatherData {
 }
 
 final weatherProvider = FutureProvider.family<WeatherData, String>((ref, city) async {
-  final apiKey = dotenv.env['API_KEY'];
+  final apiKey = dotenv.env['WEATHER_API_KEY'];
   if (apiKey == null) {
-    throw Exception('API_KEY not found in environment variables');
+    throw Exception('WEATHER_API_KEY not found in environment variables');
   }
 
   WeatherFactory weatherFactory = WeatherFactory(apiKey);
@@ -47,9 +47,9 @@ final weatherProvider = FutureProvider.family<WeatherData, String>((ref, city) a
 });
 
 final forecastProvider = FutureProvider.family<List<WeatherData>, String>((ref, city) async {
-  final apiKey = dotenv.env['API_KEY'];
+  final apiKey = dotenv.env['WEATHER_API_KEY'];
   if (apiKey == null) {
-    throw Exception('API_KEY not found in environment variables');
+    throw Exception('WEATHER_API_KEY not found in environment variables');
   }
 
   WeatherFactory weatherFactory = WeatherFactory(apiKey);
