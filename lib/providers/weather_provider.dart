@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class WeatherData {
   final String cityName;
@@ -23,7 +24,11 @@ class WeatherData {
 }
 
 final weatherProvider = FutureProvider<WeatherData>((ref) async {
-  final apiKey = 'a872b7041ae0a5d57dcb48d4d51e7602'; // Replace this with your actual API key
+  final apiKey = dotenv.env['API_KEY'];
+  if (apiKey == null) {
+    throw Exception('API_KEY not found in environment variables');
+  }
+
   final city = 'London';
   final url = Uri.parse(
       'https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric');

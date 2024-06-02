@@ -1,54 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:wander_wise/providers/weather_provider.dart';
 
-final weatherUrl = Uri.parse('https://openweathermap.org/');
-
-class WeatherForecastScreen extends StatefulWidget {
+class WeatherForecastScreen extends ConsumerWidget {
   @override
-  _WeatherForecastScreenState createState() => _WeatherForecastScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final weatherAsyncValue = ref.watch(weatherProvider);
 
-class _WeatherForecastScreenState extends State<WeatherForecastScreen> {
-  late final WebViewController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (int progress) {
-            // Update loading bar
-          },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
-          onWebResourceError: (WebResourceError error) {
-            print('Error: $error');
-          },
-        ),
-      )
-      ..loadRequest(weatherUrl);
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Weather Forecast'),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              controller.loadRequest(weatherUrl);
-            },
-            icon: Icon(Icons.refresh),
-          ),
-        ],
       ),
-      body: WebViewWidget(
-        controller: controller,
+      body: Center(
+        child: weatherAsyncValue.when(
+          data: (weather) => Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'City: ${weather.cityName}',
+                style: TextStyle(fontSize: 24),
+              ),
+              Text(
+                'Temperature: ${weather.temperature} °C',
+                style: TextStyle(fontSize: 24),
+              ),
+              Text(
+                'Description: ${weather.description}',
+                style: TextStyle(fontSize: 24),
+              ),
+            ],
+          ),
+          loading: () => CircularProgressIndicator(),
+          error: (error, stack) => Text('Error: $error'),
+        ),
       ),
     );
   }
