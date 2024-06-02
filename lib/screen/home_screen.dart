@@ -1,16 +1,20 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wander_wise/attraction_cards/attraction_cards.dart';
 import 'package:wander_wise/components/button_layout.dart';
 import 'package:wander_wise/components/home_drawer.dart';
+import 'package:wander_wise/food_cards/food_cards.dart';
 import 'package:wander_wise/resources/attractions_list.dart';
 import 'package:wander_wise/resources/color.dart';
+import 'package:wander_wise/resources/foods_list.dart';
 import 'package:wander_wise/screen/attraction_detail_screen.dart';
+import 'package:wander_wise/screen/food_detail_screen.dart';
 import 'package:wander_wise/screen/my_page_screen.dart';
 import 'package:wander_wise/screen/predictor_screen.dart';
 import 'package:wander_wise/screen/start_screen.dart';
 import 'package:wander_wise/screen/community_screen.dart';
+import 'package:wander_wise/screen/weather_forecast_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => StartScreen()),
-      (route) => false,
+          (route) => false,
     );
   }
 
@@ -111,11 +115,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       _PredictorButton(),
                       SizedBox(height: 10),
                       _CommunityButton(),
+                      SizedBox(height: 10),
+                      _WeatherButton(), // Add Weather button
                       SizedBox(height: 30),
-                      _PopularTitle(),
+                      _PlacesToVisit(),
                       _Attractions(),
-                      _PopularTitle(),
-                      _Attractions(),
+                      _MustTryDishes(),
+                      _Foods(),  // Add this widget
                     ],
                   ),
                 ),
@@ -245,15 +251,34 @@ class _FeatureTitle extends StatelessWidget {
   }
 }
 
-class _PopularTitle extends StatelessWidget {
-  const _PopularTitle({super.key});
+class _PlacesToVisit extends StatelessWidget {
+  const _PlacesToVisit({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(left: 24, bottom: 12),
       child: Text(
-        'Popular',
+        'Places To Visit',
+        style: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w800,
+          color: Colors.grey[800],
+        ),
+      ),
+    );
+  }
+}
+
+class _MustTryDishes extends StatelessWidget {
+  const _MustTryDishes({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(left: 24, bottom: 12),
+      child: Text(
+        'Must-Try Dishes',
         style: TextStyle(
           fontSize: 24,
           fontWeight: FontWeight.w800,
@@ -273,7 +298,7 @@ class _PredictorButton extends StatelessWidget {
       onTap: () {
         onPredictorScreenPressed(context);
       },
-      text: "Let's predict flight prices!",
+      text: "Let's Predict Flight Prices!",
       buttonColor: blueColor,
       textColor: Colors.white,
       buttonIcon: Icons.airplane_ticket,
@@ -305,11 +330,32 @@ class _CommunityButton extends StatelessWidget {
             ),
           );
         },
-        text: 'Go to community!',
+        text: 'Go to Community!',
         buttonColor: darkBlueColor,
         textColor: Colors.white,
         buttonIcon: Icons.message_rounded,
       ),
+    );
+  }
+}
+
+class _WeatherButton extends StatelessWidget {
+  const _WeatherButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ButtonLayout(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => WeatherForecastScreen(),
+          ),
+        );
+      },
+      text: 'Check Weather Forecast',
+      buttonColor: Colors.teal[400]!,
+      textColor: Colors.white,
+      buttonIcon: Icons.wb_sunny,
     );
   }
 }
@@ -348,6 +394,46 @@ class _AttractionsState extends State<_Attractions> {
               navigateToAttractionDetails(index), // Navigate with index
           child: AttractionCards(
             attraction: attractionMenu[index],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _Foods extends StatefulWidget {
+  const _Foods({super.key});
+
+  @override
+  State<_Foods> createState() => _FoodsState();
+}
+
+class _FoodsState extends State<_Foods> {
+  List foodMenu = foods;
+
+  void navigateToFoodDetails(int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FoodDetailScreen(
+          index: index,
+          food: foodMenu[index],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 305,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: foods.length,
+        itemBuilder: (context, index) => GestureDetector(
+          onTap: () => navigateToFoodDetails(index),
+          child: FoodCards(
+            food: foodMenu[index],
           ),
         ),
       ),

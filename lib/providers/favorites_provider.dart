@@ -1,18 +1,17 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:wander_wise/attraction_cards/attractions.dart';
 
-class FavoritesNotifier extends StateNotifier<List<Attractions>> {
-  FavoritesNotifier() : super([]);
-
-  void addFavorite(Attractions attraction) {
-    state = [...state, attraction];
-  }
-
-  void removeFavorite(Attractions attraction) {
-    state = state.where((item) => item != attraction).toList();
-  }
-}
-
-final favoritesProvider = StateNotifierProvider<FavoritesNotifier, List<Attractions>>((ref) {
+final favoritesProvider = StateNotifierProvider<FavoritesNotifier, List<dynamic>>((ref) {
   return FavoritesNotifier();
 });
+
+class FavoritesNotifier extends StateNotifier<List<dynamic>> {
+  FavoritesNotifier() : super([]);
+
+  void addFavorite(dynamic item) {
+    state = [...state, item];
+  }
+
+  void removeFavorite(dynamic item) {
+    state = state.where((element) => element != item).toList();
+  }
+}
