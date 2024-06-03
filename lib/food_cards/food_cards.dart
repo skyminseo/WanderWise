@@ -34,7 +34,7 @@ class FoodCards extends StatelessWidget {
         margin: EdgeInsets.only(
           top: 8,
           left: 16,
-          bottom: 70,
+          bottom: 30,
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),

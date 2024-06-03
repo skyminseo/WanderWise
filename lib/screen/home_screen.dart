@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => StartScreen()),
-          (route) => false,
+      (route) => false,
     );
   }
 
@@ -108,26 +108,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   topRight: Radius.circular(36),
                 ),
                 child: Container(
-                  color: Colors.grey[50], // Ensure the color matches the background
+                  color: Colors
+                      .grey[50], // Ensure the color matches the background
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 30),
                       _FeatureTitle(),
                       _PredictorButton(),
-                      SizedBox(height: 10),
+                      SizedBox(height: 12),
                       _CommunityButton(),
-                      SizedBox(height: 10),
+                      SizedBox(height: 12),
                       _WeatherButton(),
-                      SizedBox(height: 10),
+                      SizedBox(height: 12),
                       _ExchangeButton(),
-                      SizedBox(height: 10),
+                      SizedBox(height: 12),
                       _BaggageButton(),
                       SizedBox(height: 30),
                       _PlacesToVisit(),
                       _Attractions(),
+                      SizedBox(height: 8),
                       _MustTryFoods(),
-                      _Foods(),  // Add this widget
+                      _Foods(), // Add this widget
                     ],
                   ),
                 ),
@@ -263,7 +265,7 @@ class _PlacesToVisit extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 24, bottom: 12),
+      padding: EdgeInsets.only(left: 24, bottom: 8),
       child: Text(
         'Places To Visit',
         style: TextStyle(
@@ -282,7 +284,7 @@ class _MustTryFoods extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 24, bottom: 12),
+      padding: EdgeInsets.only(left: 24, bottom: 8),
       child: Text(
         'Must-Try Foods',
         style: TextStyle(
@@ -433,12 +435,13 @@ class _AttractionsState extends State<_Attractions> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 305,
+      height: 270,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: attractions.length,
         itemBuilder: (context, index) => GestureDetector(
-          onTap: () => navigateToAttractionDetails(index), // Navigate with index
+          onTap: () =>
+              navigateToAttractionDetails(index), // Navigate with index
           child: AttractionCards(
             attraction: attractionMenu[index],
           ),
@@ -473,7 +476,7 @@ class _FoodsState extends State<_Foods> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 305,
+      height: 270,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: foods.length,
