@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:wander_wise/components/card_layout.dart';
 import 'package:wander_wise/resources/color.dart';
 
@@ -8,9 +9,8 @@ class FlightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardLayout(
-      iconImage: Image.asset(
-        'asset/img/plane.png',
-      ), content: 'FLIGHT SEARCH',
+      child: Lottie.asset('asset/animation/flight_ani.json'),
+      content: 'Flight Search',
     );
   }
 }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:wander_wise/resources/color.dart';
 
 class CardLayout extends StatelessWidget {
-  final Image iconImage;
+  final Widget child;
   final String content;
 
   const CardLayout({
-    required this.iconImage,
+    required this.child,
     required this.content,
     super.key,
   });
@@ -14,7 +15,10 @@ class CardLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(60.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 60,
+        vertical: 14,
+      ),
       child: Container(
         decoration: BoxDecoration(
           color: primaryColor,
@@ -25,7 +29,11 @@ class CardLayout extends StatelessWidget {
             bottomRight: Radius.circular(32),
           ),
         ),
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 20,
+        ),
         child: Column(
           children: [
             ClipRRect(
@@ -36,9 +44,15 @@ class CardLayout extends StatelessWidget {
                 bottomRight: Radius.circular(28),
               ),
               child: Container(
-                color: blueColor,
+                height: 240,
+                color: darkPrimaryColor,
                 child: Padding(
-                    padding: const EdgeInsets.all(32.0), child: iconImage),
+                  padding: const EdgeInsets.only(
+                    left: 32.0,
+                    right: 32,
+                  ),
+                  child: child,
+                ),
               ),
             ),
             Container(
@@ -46,7 +60,6 @@ class CardLayout extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.white,
               ),
-              width: 500,
               height: 70,
               padding: EdgeInsets.only(
                 left: 16,

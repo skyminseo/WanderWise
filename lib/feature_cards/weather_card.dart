@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:wander_wise/components/card_layout.dart';
 import 'package:wander_wise/resources/color.dart';
 
@@ -8,9 +9,8 @@ class WeatherCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CardLayout(
-      iconImage: Image.asset(
-        'asset/img/weather.png',
-      ), content: 'WEATHER FORECAST',
+      child: Lottie.asset('asset/animation/place_ani.json'),
+      content: 'Destination Weather Forecast',
     );
   }
 }
