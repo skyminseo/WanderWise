@@ -86,34 +86,64 @@ class _BaggageScreenState extends State<BaggageScreen> {
                             fontSize: 20,
                             fontWeight: FontWeight.w600,
                           )),
-                      SizedBox(height: 10),
                       Text(
                         baggageAllowance[_selectedAirline!]![_selectedClass!]![
                             'Allowance']!,
                         style: TextStyle(fontSize: 14),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 24),
                       Text('Liquids',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           )),
-                      SizedBox(height: 10),
                       Text(
                         baggageAllowance[_selectedAirline!]![_selectedClass!]![
                             'Liquids']!,
                         style: TextStyle(fontSize: 14),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 24),
                       Text('Sharp Objects',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           )),
-                      SizedBox(height: 10),
                       Text(
                         baggageAllowance[_selectedAirline!]![_selectedClass!]![
                             'Sharp Objects']!,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      SizedBox(height: 24),
+                      Text('Electronics',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          )),
+                      Text(
+                        baggageAllowance[_selectedAirline!]![_selectedClass!]![
+                            'Electronics']!,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      SizedBox(height: 24),
+                      Text('Prohibited Items',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          )),
+                      Text(
+                        baggageAllowance[_selectedAirline!]![_selectedClass!]![
+                            'Prohibited Items']!,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      SizedBox(height: 24),
+                      Text('Special Items',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          )),
+                      Text(
+                        baggageAllowance[_selectedAirline!]![_selectedClass!]![
+                            'Special Items']!,
                         style: TextStyle(fontSize: 14),
                       ),
                     ],
