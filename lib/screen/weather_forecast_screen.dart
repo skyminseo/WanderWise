@@ -56,6 +56,15 @@ class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).maybePop();
+          },
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+          ),
+        ),
+        centerTitle: true,
         title: Text('Weather Forecast'),
       ),
       body: Padding(
@@ -69,12 +78,13 @@ class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
                 decoration: InputDecoration(
                   labelText: 'Search City',
                   labelStyle: TextStyle(
-                    color: darkBlueColor,
+                    color: Colors.grey[600],
                   ),
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: darkBlueColor, // Change this color to your desired focus color
+                      color:
+                          darkBlueColor, // Change this color to your desired focus color
                       width: 2.0,
                     ),
                   ),
@@ -112,18 +122,21 @@ class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
                       isExpanded: false,
                       hint: Text(
                         'Select City',
-                        style: TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[600],
+                        ),
                       ),
                       items: weatherCityNames
                           .map((item) => DropdownMenuItem<String>(
-                        value: item,
-                        child: Text(
-                          item,
-                          style: const TextStyle(
-                            fontSize: 14,
-                          ),
-                        ),
-                      ))
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ))
                           .toList(),
                       onChanged: (value) {
                         _searchWeather(value as String);
@@ -217,7 +230,7 @@ class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
                     Text(
                       'Forecast',
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     SizedBox(height: 16),
                     forecastAsyncValue.when(

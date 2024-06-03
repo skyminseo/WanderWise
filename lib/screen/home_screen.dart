@@ -9,6 +9,7 @@ import 'package:wander_wise/resources/attractions_list.dart';
 import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/resources/foods_list.dart';
 import 'package:wander_wise/screen/attraction_detail_screen.dart';
+import 'package:wander_wise/screen/baggage_screen.dart';
 import 'package:wander_wise/screen/food_detail_screen.dart';
 import 'package:wander_wise/screen/my_page_screen.dart';
 import 'package:wander_wise/screen/predictor_screen.dart';
@@ -117,9 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       SizedBox(height: 10),
                       _CommunityButton(),
                       SizedBox(height: 10),
-                      _WeatherButton(), // Add Weather button
+                      _WeatherButton(),
                       SizedBox(height: 10),
-                      _CurrencyButton(), // Add Currency Button
+                      _ExchangeButton(),
+                      SizedBox(height: 10),
+                      _BaggageButton(),
                       SizedBox(height: 30),
                       _PlacesToVisit(),
                       _Attractions(),
@@ -363,8 +366,8 @@ class _WeatherButton extends StatelessWidget {
   }
 }
 
-class _CurrencyButton extends StatelessWidget {
-  const _CurrencyButton({super.key});
+class _ExchangeButton extends StatelessWidget {
+  const _ExchangeButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -376,10 +379,31 @@ class _CurrencyButton extends StatelessWidget {
           ),
         );
       },
-      text: 'Check Currency Rates',
+      text: 'Check Exchange Rates',
       buttonColor: Colors.green[400]!,
       textColor: Colors.white,
       buttonIcon: Icons.attach_money,
+    );
+  }
+}
+
+class _BaggageButton extends StatelessWidget {
+  const _BaggageButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ButtonLayout(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => BaggageScreen(),
+          ),
+        );
+      },
+      text: 'Check Baggage Allowance',
+      buttonColor: Colors.orange[400]!,
+      textColor: Colors.white,
+      buttonIcon: Icons.work,
     );
   }
 }
