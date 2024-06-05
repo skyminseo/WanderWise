@@ -58,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverAppBar(
             backgroundColor: blueGreyColor,
             pinned: true,
-            floating: true,
+            floating: false,
             expandedHeight: 230.0,
             flexibleSpace: FlexibleSpaceBar(
               background: _WelcomeText(),
@@ -405,7 +405,7 @@ class _BaggageButton extends StatelessWidget {
       text: 'Check Baggage Allowance',
       buttonColor: Colors.orange[400]!,
       textColor: Colors.white,
-      buttonIcon: Icons.work,
+      buttonIcon: Icons.luggage_outlined,
     );
   }
 }

@@ -9,7 +9,7 @@ class TicketCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return CardLayout(
       child: Lottie.asset('asset/animation/ticket_ani.json'),
-      content: 'Ticket Price Prediction for You',
+      content: 'Ticket Price Prediction \nfor You',
     );
   }
 }

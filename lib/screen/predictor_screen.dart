@@ -189,9 +189,9 @@ class _PredictorScreenState extends State<PredictorScreen> {
               [
                 Column(
                   children: [
-                    SizedBox(height: 12),
+                    SizedBox(height: 36),
                     Text(
-                      'Choose Your Travel Preferences',
+                      'Choose Your Flight Preferences',
                       style: TextStyle(
                         color: darkBlueColor,
                         fontSize: 20,

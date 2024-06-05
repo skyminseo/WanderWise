@@ -254,7 +254,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 horizontal: 20,
               ),
               child: Text(
-                'I recommend buying tickets on these dates!',
+                'We highly recommend purchasing tickets for these dates!',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,

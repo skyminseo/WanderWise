@@ -9,7 +9,7 @@ class CurrencyCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return CardLayout(
       child: Lottie.asset('asset/animation/currency_ani.json'),
-      content: 'Check Exchange Rate',
+      content: 'Check Exchange Rates',
     );
   }
 }

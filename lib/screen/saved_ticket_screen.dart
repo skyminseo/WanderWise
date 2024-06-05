@@ -6,6 +6,7 @@ import 'package:wander_wise/providers/saved_tickets_provider.dart';
 import 'package:wander_wise/resources/color.dart';
 import 'package:wander_wise/screen/home_screen.dart';
 import 'package:wander_wise/screen/predictor_screen.dart';
+import 'package:wander_wise/screen/weather_forecast_screen.dart';
 
 class SavedTicketScreen extends ConsumerWidget {
   @override
@@ -98,7 +99,7 @@ class SavedTicketScreen extends ConsumerWidget {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => PredictorScreen(),
+                          builder: (context) => WeatherForecastScreen(),
                         ),
                       );
                     },
