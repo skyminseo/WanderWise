@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wander_wise/resources/airlines_list.dart';
 import 'package:wander_wise/resources/baggage_data.dart';
+import 'package:wander_wise/resources/color.dart';
 
 class BaggageScreen extends StatefulWidget {
   const BaggageScreen({Key? key}) : super(key: key);
@@ -16,7 +17,9 @@ class _BaggageScreenState extends State<BaggageScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
+        backgroundColor: primaryColor,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).maybePop();

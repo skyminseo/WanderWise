@@ -22,7 +22,9 @@ class _CurrencyScreenState extends ConsumerState<CurrencyScreen> {
     final currencyAsyncValue = ref.watch(currencyProvider(_selectedCurrency));
 
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
+        backgroundColor: primaryColor,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).maybePop();

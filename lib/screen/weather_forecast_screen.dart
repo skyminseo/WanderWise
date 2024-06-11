@@ -55,7 +55,9 @@ class _WeatherForecastScreenState extends ConsumerState<WeatherForecastScreen> {
     final forecastAsyncValue = ref.watch(forecastProvider(_city));
 
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
+        backgroundColor: primaryColor,
         leading: IconButton(
           onPressed: () {
             Navigator.of(context).maybePop();
